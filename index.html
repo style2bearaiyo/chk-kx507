@@ -1,3 +1,103 @@
+
+การสนทนากับ Gemini
+
+
+ปรับให้ upเว็บขึ้น github ให้หน่อย
+
+เพิ่ม รูปทำเช็คลิสจุดต่าง
+
+วางแผนเสอนหน่อย ให้อนุมัติแล้วค่อยทำ
+
+ได้เลยครับ ผมได้จัดทำ แผนการนำเว็บขึ้น GitHub Pages และ แผนการเพิ่มรูปภาพเพื่อใช้เป็นจุดสังเกต/อ้างอิง (Reference Images) มาให้คุณพิจารณาก่อนลงมือแก้โค้ดจริงครับ
+
+1. แผนการนำเว็บไซต์ขึ้นอัปโหลดบน GitHub (GitHub Pages)
+เพื่อให้เช็คลิสต์นี้สามารถเปิดใช้งานได้จริงผ่านลิงก์ออนไลน์ (และใช้งานบนมือถือที่หน้าร้านได้สะดวก) ผมขอเสนอขั้นตอนการทำงานดังนี้ครับ:
+
+โครงสร้างไฟล์โปรเจกต์:
+
+index.html (ไฟล์โค้ดหลักที่เราจะแก้ไขกัน)
+
+images/ (โฟลเดอร์สำหรับเก็บรูปภาพกีตาร์ทั้ง 7 รูปที่คุณแนบมา)
+
+ขั้นตอนการ Deploy:
+
+สร้าง Repository ใหม่บน GitHub (เช่นตั้งชื่อว่า cort-kx507ms-checklist)
+
+อัปโหลดไฟล์ index.html และโฟลเดอร์ images เข้าไปใน Repository
+
+เข้าไปที่ Settings > Pages ของ Repository นั้น
+
+เลือก Source เป็น main branch แล้วกด Save รอประมาณ 1-2 นาที คุณก็จะได้ลิงก์เว็บ (เช่น https://[ชื่อคุณ].github.io/cort-kx507ms-checklist/) ไปเปิดใช้งานได้ทันที
+
+2. แผนการเพิ่มรูปภาพจุดสังเกตในเช็คลิสต์ (UI/UX & Image Mapping)
+เพื่อให้หน้าเว็บไม่ดูรกและยังใช้งานบนมือถือได้ลื่นไหล ผมเสนอให้ แทรกปุ่ม "ดูรูปภาพอ้างอิง" (View Reference) ขนาดเล็กไว้ในส่วน howto (กล่องคำแนะนำ) ของแต่ละหมวดหมู่ที่เกี่ยวข้อง เมื่อกดปุ่ม รูปภาพจะขยายเด้งขึ้นมากลางจอ (Lightbox/Modal) ให้ดูเทียบจุดต่างได้ทันที
+
+การจับคู่รูปภาพกับหมวดหมู่การตรวจ:
+ผมจะนำรูปที่คุณให้มา ไปผูกเข้ากับหมวดหมู่เช็คลิสต์ที่มีอยู่แล้วดังนี้ครับ:
+
+หมวด 2: ตรวจคอกีตาร์ด้วยตา & หมวด 16: ตรวจ Neck Joint
+
+รูปภาพที่ใช้: cort-kx507-pale-moon-electric-guitar-gal-frontneck.jpg และ cort-kx507-pale-moon-electric-guitar-gal-backneck.jpg
+
+จุดประสงค์: ใช้ดูแนวไม้ รอยต่อคอ และลักษณะของ Fingerboard
+
+หมวด 6: ตรวจ Electronics & หมวด 12: ตรวจ Bridge / Saddle
+
+รูปภาพที่ใช้: cort-kx507-pale-moon-electric-guitar-gal-pickupneck.jpg และ cort-kx507-pale-moon-electric-guitar-gal-pickupbridgeandBridge.jpg
+
+จุดประสงค์: ดูตำแหน่งปิ๊กอัพ Fishman, การวางสายบน Saddle ของบริดจ์เฉียง (Multiscale)
+
+หมวด 9: ตรวจ Body / Finish / Pale Moon Top
+
+รูปภาพที่ใช้: cort-kx507-pale-moon-electric-guitar-gal-front.jpg และ cort-kx507-pale-moon-electric-guitar-gal-back.jpg
+
+จุดประสงค์: เช็คลวดลาย Pale Moon ลายไม้ด้านหน้า/หลัง และจุดเว้าขอบบอดี้
+
+หมวด 13: ตรวจ Locking Tuners & หมวด 17: ตรวจ Headstock
+
+รูปภาพที่ใช้: cort-kx507-pale-moon-electric-guitar-gal-frontheadstock.jpg และ cort-kx507-pale-moon-electric-guitar-gal-backheadstock.jpg
+
+จุดประสงค์: ดูลักษณะหัวกีตาร์ การวางลูกบิดแบบล็อกสาย และตราประทับ/ซีเรียลด้านหลัง
+
+แผนการจัดวางรูปภาพแบบกดขยาย (Lightbox) และการจับคู่รูปตามหมวดหมู่ด้านบนนี้ดูโอเคสำหรับคุณไหมครับ หรืออยากให้แสดงรูปภาพกางไว้เลยตั้งแต่แรกโดยไม่ต้องกดปุ่มขยายก่อนลงมือเขียนโค้ดครับ?
+
+จัดทำโค้ดและระบบอ้างอิงรูปภาพให้เรียบร้อยแล้วครับ โดยผมได้นำข้อมูลที่คุณต้องการมาผสานเข้ากับโค้ดตัวเดิม เพิ่มระบบ Lightbox (กดดูรูปขยายกลางจอ) เข้าไปในหมวดหมู่ที่เกี่ยวข้อง และเตรียมคำแนะนำสำหรับการนำขึ้น GitHub Pages ไว้ให้ทำตามได้ทันทีครับ
+
+📂 วิธีจัดเตรียมไฟล์และอัปโหลดขึ้น GitHub Pages
+เพื่อให้หน้าเว็บใช้งานได้จริงบนมือถือพร้อมรูปภาพ กรุณาทำตามขั้นตอนดังนี้ครับ:
+
+สร้างโฟลเดอร์บนคอมพิวเตอร์:
+
+สร้างโฟลเดอร์ชื่อโปรเจกต์ เช่น cort-kx507ms-checklist
+
+ข้างในโฟลเดอร์นี้ ให้สร้างโฟลเดอร์ย่อยชื่อ images
+
+บันทึกไฟล์รูปภาพและโค้ด:
+
+นำรูปภาพทั้ง 8 รูป (ชื่อไฟล์ดั้งเดิม) ไปใส่ไว้ในโฟลเดอร์ images
+
+คัดลอกโค้ด HTML ด้านล่างทั้งหมด ไปสร้างเป็นไฟล์ชื่อ index.html ไว้ด้านนอกสุด (ระดับเดียวกับโฟลเดอร์ images)
+
+อัปโหลดขึ้น GitHub:
+
+ล็อกอินเข้า GitHub กดปุ่ม New Repository (ตั้งชื่ออะไรก็ได้ เช่น guitar-checklist)
+
+อัปโหลดไฟล์ index.html และโฟลเดอร์ images ทั้งหมดเข้าไป แล้วกด Commit changes
+
+เปิดใช้งานหน้าเว็บ (GitHub Pages):
+
+ในหน้า Repository ของคุณ ไปที่แท็บ Settings
+
+เมนูซ้ายมือ เลือก Pages
+
+ตรงหัวข้อ Build and deployment > Branch ให้เลือกเป็น main แล้วกดปุ่ม Save
+
+รอประมาณ 1-2 นาที GitHub จะแสดงลิงก์เว็บไซต์ของคุณ (เช่น https://ชื่อคุณ.github.io/guitar-checklist/) สามารถเซฟลิงก์นี้ลงในมือถือเพื่อใช้งานหน้าร้านได้เลยครับ
+
+💻 โค้ดฉบับสมบูรณ์ (index.html)
+โค้ดนี้รวมระบบ Theme (สีม่วง Joker/ส้ม), ระบบบันทึกอัตโนมัติ (LocalStorage), เช็คลิสต์ตามเนื้อหาล่าสุด, และระบบกดขยายรูปภาพอ้างอิงครับ
+
+HTML
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -904,3 +1004,921 @@ init();
 </script>
 </body>
 </html>
+ปรับเนื้อหาเรื่อง jazz ออก
+
+ได้เลยครับ ผมได้ทำการปรับแก้โค้ดโดย ตัดคำว่า "แนว Jazz" ออกจากเช็คลิสต์หมวดที่ 17 (การนั่งเล่น) เรียบร้อยแล้วครับ
+
+คุณสามารถคัดลอกโค้ดด้านล่างนี้ไปวางทับในไฟล์ index.html เดิมได้เลยครับ ทุกอย่างรวมถึงระบบเซฟและรูปภาพจะยังทำงานได้ตามปกติเหมือนเดิมครับ
+
+HTML
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist ตรวจรับกีตาร์ — Cort KX507MS Pale Moon</title>
+<style>
+  :root{
+    --bg:#120B1A;
+    --surface:#1C1226;
+    --surface2:#251731;
+    --border:#3B2450;
+    --purple:#9A3FE0;
+    --purple-deep:#6E2AA8;
+    --purple-soft:#9A3FE026;
+    --orange:#F0932B;
+    --orange-soft:#F0932B26;
+    --orange-deep:#C46A16;
+    --text:#F4EEFA;
+    --muted:#A78FC4;
+    --muted-dim:#7A628F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0; overflow-x: hidden;}
+  body{
+    background:radial-gradient(circle at 50% -10%, #251531 0%, var(--bg) 55%);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:70px;
+    min-height:100vh;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(180deg,#1A1024 0%, #120B1A 100%);
+    border-bottom:1px solid var(--border);
+    padding:14px 16px 12px;
+    box-shadow:0 4px 20px #00000066;
+  }
+  .topbar .eyebrow{
+    font-size:10px; letter-spacing:2px; color:var(--orange);
+    font-weight:800; text-transform:uppercase; margin-bottom:3px;
+  }
+  .topbar h1{
+    font-weight:800; font-size:19px; margin:0 0 2px;
+    letter-spacing:0.2px;
+  }
+  .topbar .sub{ font-size:12px; color:var(--muted); margin-bottom:12px;}
+  .progress-wrap{ display:flex; align-items:center; gap:10px; }
+  .progress-track{
+    flex:1; height:9px; border-radius:6px;
+    background:var(--surface2);
+    overflow:hidden; border:1px solid var(--border);
+  }
+  .progress-fill{
+    height:100%; width:0%;
+    background:linear-gradient(90deg, var(--purple-deep), var(--purple) 70%, var(--orange));
+    transition:width .3s ease;
+  }
+  .progress-count{ font-size:12px; color:var(--orange); font-weight:800; white-space:nowrap; }
+
+  .save-status{
+    font-size:10.5px; color:var(--muted-dim); margin-top:6px;
+    display:flex; align-items:center; gap:5px;
+  }
+  .save-status .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--muted-dim); flex-shrink:0;
+    transition:background .2s ease;
+  }
+  .save-status.saved .dot{ background:var(--purple); box-shadow:0 0 6px var(--purple); }
+  .save-status.saving .dot{ background:var(--orange); }
+
+  .container{ padding:14px; max-width:540px; margin:0 auto; }
+
+  .inspector-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .inspector-card label{
+    font-size:11px; color:var(--muted); font-weight:700;
+    white-space:nowrap;
+  }
+  .inspector-card input{
+    flex:1; min-width:0;
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:inherit;
+    font-size:14px; padding:9px 11px;
+  }
+  .inspector-card input::placeholder{ color:var(--muted-dim); }
+  .inspector-card input:focus{ outline:none; border-color:var(--purple); }
+
+  .reset-link{
+    display:block; text-align:center; margin-top:16px;
+    font-size:11.5px; color:var(--muted-dim);
+    text-decoration:underline; cursor:pointer;
+    background:none; border:none; width:100%;
+  }
+
+  /* ---------- Critical intro banner ---------- */
+  .rule-banner{
+    background:linear-gradient(135deg, var(--orange-soft), var(--purple-soft));
+    border:1px solid var(--orange-deep);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:12.5px;
+    color:var(--text);
+    line-height:1.6;
+    margin-bottom:14px;
+  }
+  .rule-banner b{ color:var(--orange); }
+
+  /* ---------- Section ---------- */
+  .section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  .section.critical{
+    border:1px solid var(--orange-deep);
+    box-shadow:0 0 0 1px #F0932B22, 0 8px 24px #00000055;
+  }
+
+  .section-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .section-head .left{ display:flex; align-items:center; gap:11px; min-width:0; }
+  .section-num{
+    font-weight:800; font-size:11px;
+    color:var(--purple);
+    border:1px solid var(--purple-soft);
+    background:var(--purple-soft);
+    border-radius:6px;
+    padding:3px 7px;
+    min-width:26px;
+    text-align:center;
+    flex-shrink:0;
+  }
+  .section.critical .section-num{
+    color:var(--orange);
+    border-color:var(--orange-soft);
+    background:var(--orange-soft);
+  }
+  .section-title{ font-size:15px; font-weight:700; }
+  .section-title .crit-tag{
+    display:inline-block;
+    font-size:9.5px; font-weight:800; letter-spacing:0.5px;
+    color:var(--bg);
+    background:var(--orange);
+    padding:2px 6px; border-radius:5px;
+    margin-left:6px; vertical-align:middle;
+  }
+  .section-meta{ font-size:11px; color:var(--muted-dim); margin-top:2px; }
+  .section-badge{
+    font-size:11px; font-weight:700; color:var(--purple);
+    background:var(--surface2); border:1px solid var(--border);
+    padding:2px 8px; border-radius:20px; margin-right:8px; flex-shrink:0;
+  }
+  .section.critical .section-badge{ color:var(--orange); }
+
+  .chevron{ width:18px; height:18px; color:var(--muted); transition:transform .25s ease; flex-shrink:0; }
+  .section.open .chevron{ transform:rotate(180deg); color:var(--purple); }
+  .section.critical.open .chevron{ color:var(--orange); }
+
+  .section-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .section.open .section-body{ border-top:1px solid var(--border); }
+
+  .howto{
+    font-size:11.5px; color:var(--muted); background:var(--surface2);
+    padding:9px 14px; line-height:1.6; border-bottom:1px solid var(--border);
+  }
+  .howto b{ color:var(--purple); }
+  .section.critical .howto b{ color:var(--orange); }
+
+  /* ---------- Image Reference Buttons & Modal ---------- */
+  .ref-images-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .ref-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--purple); color: var(--purple);
+    padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .ref-btn:hover { background: var(--purple); color: #fff; }
+  
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9); z-index: 1000;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: auto; }
+  .modal-content { max-width: 95%; max-height: 90%; position: relative; display: flex; justify-content: center; }
+  .modal-content img { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+  .modal-close {
+    position: absolute; top: -35px; right: 0; color: #fff; font-size: 32px;
+    cursor: pointer; background: none; border: none; line-height: 1; padding: 0;
+  }
+
+  /* ---------- Item ---------- */
+  .item{ padding:12px 14px; border-bottom:1px solid var(--border); display:flex; gap:10px; }
+  .item:last-child{ border-bottom:none; }
+
+  .item-status{ width:4px; border-radius:3px; flex-shrink:0; background:var(--surface2); transition:background .2s ease; }
+  .item.checked .item-status{ background:var(--purple); }
+  .section.critical .item.checked .item-status{ background:var(--orange); }
+
+  .item-main{ flex:1; min-width:0; }
+  .item-row{ display:flex; align-items:flex-start; gap:10px; }
+
+  .checkbox{
+    appearance:none; -webkit-appearance:none;
+    width:22px; height:22px; border-radius:6px;
+    border:2px solid var(--border); background:var(--surface2);
+    flex-shrink:0; margin-top:1px; cursor:pointer; position:relative;
+    transition:all .15s ease;
+  }
+  .checkbox:checked{ background:var(--purple); border-color:var(--purple); }
+  .section.critical .checkbox:checked{ background:var(--orange); border-color:var(--orange); }
+  .checkbox:checked::after{
+    content:""; position:absolute; left:6px; top:2px;
+    width:6px; height:11px; border:solid #14081F;
+    border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+
+  .item-text{ font-size:14px; line-height:1.5; }
+  .item.checked .item-text{ color:var(--muted-dim); text-decoration:line-through; text-decoration-color:var(--border); }
+
+  .item-actions{ display:flex; gap:14px; margin-top:6px; }
+  .comment-toggle{
+    background:none; border:none; color:var(--purple); font-size:12px;
+    padding:0; cursor:pointer; display:flex; align-items:center; gap:4px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .section.critical .comment-toggle{ color:var(--orange); }
+  .comment-toggle svg{ width:13px; height:13px; }
+  .comment-toggle .cnt{
+    background:var(--purple-soft); color:var(--purple);
+    border-radius:8px; padding:0 6px; font-size:10px; font-weight:700;
+  }
+  .section.critical .comment-toggle .cnt{ background:var(--orange-soft); color:var(--orange); }
+
+  .comment-box{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .comment-box.open{ max-height:120px; margin-top:8px; }
+  .comment-box textarea{
+    width:100%; background:var(--surface2); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:inherit; font-size:13px;
+    padding:8px 10px; resize:none; min-height:60px;
+  }
+  .comment-box textarea::placeholder{ color:var(--muted-dim); }
+  .comment-box textarea:focus{ outline:none; border-color:var(--purple); }
+  .section.critical .comment-box textarea:focus{ border-color:var(--orange); }
+
+  /* ---------- Footer summary ---------- */
+  .final-card{
+    background:linear-gradient(160deg, var(--purple-soft), transparent 60%), var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px; padding:16px; margin-top:16px; text-align:center;
+  }
+  .final-card .big{ font-size:28px; font-weight:800; color:var(--orange); }
+  .final-card .lbl{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .final-card .verdict{
+    margin-top:10px; font-size:13px; font-weight:700; padding:8px 10px;
+    border-radius:8px; background:var(--surface2); border:1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="eyebrow">Field Checklist</div>
+  <h1>ตรวจรับกีตาร์หน้าร้าน</h1>
+  <div class="sub">Cort KX507MS Pale Moon · 7-String Multiscale · งบไม่เกิน 22,000 บาท</div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-count" id="progressCount">0/0</div>
+  </div>
+  <div class="save-status" id="saveStatus"><span class="dot"></span><span id="saveStatusText">ยังไม่มีข้อมูลบันทึกไว้</span></div>
+</div>
+
+<div class="container">
+  <div class="inspector-card">
+    <label for="inspectorName">ผู้ตรวจ</label>
+    <input type="text" id="inspectorName" placeholder="ชื่อผู้ตรวจ...">
+  </div>
+
+  <div class="rule-banner">
+    เริ่มจาก <b>หมวด 1: จุดตรวจร้ายแรง</b> ก่อนเสมอ — ถ้าไม่ผ่านข้อใดข้อหนึ่งในหมวดนี้ ให้ <b>ขอเปลี่ยนตัวทันที</b> ไม่ต้องเสียเวลาตรวจหมวดถัด ๆ ไป ถ้าผ่านหมวด 1 แล้ว ค่อยไล่ตรวจหมวด 2 เป็นต้นไปตามลำดับความสำคัญ
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="final-card">
+    <div class="big" id="finalScore">0%</div>
+    <div class="lbl">สัดส่วนข้อที่ตรวจผ่านทั้งหมด</div>
+    <div class="verdict" id="finalVerdict">เริ่มตรวจหมวด 1 ก่อน — ยังไม่มีข้อมูลเพียงพอ</div>
+  </div>
+
+  <button class="reset-link" id="resetBtn" type="button">ล้างข้อมูลทั้งหมดแล้วเริ่มตรวจตัวใหม่</button>
+</div>
+
+<!-- Modal สำหรับขยายรูปภาพอ้างอิง -->
+<div class="modal-overlay" id="imgModal" onclick="closeModal(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal(event)">&times;</button>
+    <img id="modalImg" src="" alt="Reference Image">
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {
+    critical: true,
+    title: "จุดตรวจร้ายแรง (Deal-Breaker)",
+    meta: "ต้องผ่านทุกข้อ — ไม่ผ่านข้อเดียวก็ขอเปลี่ยนตัว",
+    howto: "ตรวจหมวดนี้ก่อนเป็นอันดับแรกเสมอ นี่คือรายการที่ <b>Setup ปกติแก้ไม่ได้</b> ถ้าเจอปัญหาข้อใดข้อหนึ่ง ให้หยุดและแจ้งพนักงานขอเปลี่ยนตัวทันที ไม่จำเป็นต้องตรวจหมวดถัดไปให้ครบก็ได้",
+    items: [
+      "คอบิดชัดเจน (Neck Twist)",
+      "คอมีรอยแตกตามแนวไม้",
+      "Headstock แตก โดยเฉพาะบริเวณหลัง Nut",
+      "Body แตก",
+      "เฟรตยกหลายตัว",
+      "Fretwork ผิดหนัก (ระดับเฟรตสูง-ต่ำไม่เท่ากันชัดเจน)",
+      "Dead Note หลายตำแหน่งบนคอ",
+      "Nut แตก หรือร่อง Nut เสียหนัก",
+      "Bridge เสียหรือผิดรูป",
+      "Pickup selector เสีย (สลับตำแหน่งแล้วเสียงไม่เปลี่ยน/หาย)",
+      "Push-Pull เสีย (ดึงแล้วเสียงไม่เปลี่ยนจริง)",
+      "Electronics มีปัญหาหลายจุด (Crackle รุนแรง/เสียงหายบ่อย)",
+      "Truss rod มีปัญหา ช่างปรับไม่ได้",
+      "Intonation ผิดหนัก ปรับ Saddle จนสุดแล้วยังเพี้ยน",
+      "ของใหม่มีรอยกระแทกหนักที่ไม่ได้แจ้งล่วงหน้า",
+      "รู้สึกว่า Multiscale ไม่เข้ามือเลย (เป็นเรื่อง Ergonomics ไม่ใช่ Setup)",
+    ]
+  },
+  {
+    title: "ตรวจคอกีตาร์ด้วยตา (Neck)",
+    meta: "5 ข้อ",
+    howto: "ตั้งกีตาร์ให้ Headstock อยู่ด้านบน หลับตาข้างหนึ่ง มองไล่แนวคอจาก Headstock ไปยัง Bridge",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-frontneck.jpg', label: 'หน้าคอ / ฟิงเกอร์บอร์ด' },
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-backneck.jpg', label: 'หลังคอ 5-Piece' }
+    ],
+    items: [
+      "คอดูตรงหรือโค้งอย่างสม่ำเสมอตลอดแนว",
+      "ไม่มี Neck Twist แม้เพียงเล็กน้อย",
+      "ไม่มีจุดหักหรือคอดผิดธรรมชาติ",
+      "ไม่มีรอยแตกตามแนวคอ",
+      "ขอบ Fingerboard ซ้าย-ขวาไม่บิดเบี้ยวผิดธรรมชาติ",
+    ]
+  },
+  {
+    title: "ตรวจเฟรต (24 ตัว Stainless Steel)",
+    meta: "8 ข้อ",
+    howto: "ใช้นิ้วลากเบา ๆ ไล่ขอบ Fingerboard ทั้งสองฝั่ง แล้วมองไล่หน้าเฟรตทั้งคอ",
+    items: [
+      "ไม่มี Fret end คมจนบาดนิ้ว",
+      "ไม่มีจุดที่แทงนิ้วเวลาไล้ผ่าน",
+      "เฟรตทุกตัวนั่งสนิทกับร่องเฟรต",
+      "ไม่มีเฟรตยกขึ้นจากไม้",
+      "ไม่มีเฟรตโยกเมื่อกดนิ้ว",
+      "ไม่มีรอยกระแทกหนักบนเฟรต",
+      "ไม่มีร่องหรือรอยลึกผิดปกติบนหน้าเฟรต",
+      "ไม่มีจุดที่เฟรตสูง/ต่ำผิดปกติเมื่อมองไล่แนว",
+    ]
+  },
+  {
+    title: "ทดสอบทุกสาย / Dead Note / Sustain",
+    meta: "6 ข้อ",
+    howto: "ไล่เล่น Open→1→2→3→4→5→7→8→10→12→15→17→19→21→24 ทีละสายจากสาย 7 ไปสาย 1",
+    items: [
+      "ทุกโน้ตออกเสียงครบ ไม่มีเสียงหาย",
+      "ไม่มี Dead Note",
+      "ไม่มีเสียงดับผิดปกติระหว่างโน้ต",
+      "Sustain สม่ำเสมอทั้งคอ",
+      "Buzz ไม่รุนแรง",
+      "Bend สายแล้วเสียงไม่ดับ",
+    ]
+  },
+  {
+    title: "ทดสอบสาย 7 (Low B) — จุดขายหลัก",
+    meta: "5 ข้อ",
+    howto: "ใช้ปิ๊กอัพ Bridge ทดสอบ Palm mute, Chug, Power chord กับสาย 7 โดยเฉพาะ",
+    items: [
+      "Low B ให้เสียง Tight ไม่บวมมัว",
+      "ไม่มีอาการ Mud (เสียงจมเบลอ)",
+      "Palm mute สาย 7 ยังมี Attack ชัด",
+      "คอร์ดที่ใช้สาย 7 ยังแยกโน้ตได้",
+      "Sustain สาย 7 ดี ไม่ดับเร็วผิดปกติ",
+    ]
+  },
+  {
+    title: "ตรวจ Electronics / Fishman Fluence Modern",
+    meta: "13 ข้อ",
+    howto: "ทดสอบสวิตช์ 3 ทาง, Volume/Tone (ไล่ 0→100), และ Push-Pull ทั้งสองปุ่ม ด้วยเสียง Clean ก่อนเสมอ",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-pickupneck.jpg', label: 'Neck Pickup' },
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-pickupbridgeandBridge.jpg', label: 'Bridge Pickup' }
+    ],
+    items: [
+      "ตำแหน่ง Bridge มีเสียง",
+      "ตำแหน่ง Middle มีเสียง",
+      "ตำแหน่ง Neck มีเสียง",
+      "ไม่มีเสียงหายระหว่างสลับตำแหน่ง",
+      "ไม่มี Crackle รุนแรง",
+      "Volume: เสียงเปลี่ยนสม่ำเสมอ ไม่มี Dead spot",
+      "Tone: เสียงเปลี่ยนสม่ำเสมอ ไม่มีจุดผิดปกติ",
+      "Volume Push-Pull: Push=Voice 1, Pull=Voice 2 เปลี่ยนจริง",
+      "Tone Push-Pull: Push=Humbucker, Pull=Coil-split (Voice 3) เปลี่ยนจริง",
+      "ไม่มีเสียงหายตอนสลับ Push-Pull",
+      "ไม่มี Crackle ตอนสลับ Push-Pull",
+      "ช่องแบตเตอรี่และ Connector แน่น ไม่มีสนิม",
+      "ถามร้าน: แบตใหม่ไหม เป็นตัว Display หรือของใหม่จากกล่อง",
+    ]
+  },
+  {
+    title: "ตรวจ Intonation",
+    meta: "3 ข้อ",
+    howto: "ใช้ Tuner เทียบสายเปล่า / Harmonic เฟรต 12 / กดจริงเฟรต 12 อย่างน้อยสาย 7, 6 และ 1",
+    items: [
+      "สายเปล่าตรง",
+      "Harmonic เฟรต 12 ตรง",
+      "โน้ตกดจริงเฟรต 12 ใกล้เคียงกับ Harmonic",
+    ]
+  },
+  {
+    title: "ตรวจความรู้สึก Multiscale (Ergonomics)",
+    meta: "8 ข้อ",
+    howto: "ทดลองเล่นสาย 7 เฟรต 5 → สาย 6 เฟรต 5 → สาย 5 เฟรต 5 ต่อเนื่อง แล้วลอง Power chord, Bend, Scale ในตำแหน่งต่าง ๆ",
+    items: [
+      "Low Position (เฟรต 1–5): เล่นสบาย ไม่ต้องเอี้ยวมือมาก",
+      "Low Position: Power chord ไม่เกร็งข้อมือ",
+      "Middle Position (เฟรต 7–12, รอบ Neutral Fret ที่เฟรต 8): เล่นเป็นธรรมชาติ",
+      "Middle Position: เปลี่ยนตำแหน่งคอร์ดง่าย",
+      "High Position (เฟรต 15–24): โซโล่/Alternate picking สบาย",
+      "High Position: Bend สายไม่ติดขัดจากมุมเอียงของเฟรต",
+      "String skipping ทำได้คล่องทุกตำแหน่ง",
+      "Octave/Scale เล่นข้ามตำแหน่งได้ลื่น",
+    ]
+  },
+  {
+    title: "ตรวจ Body / Finish / Pale Moon Top",
+    meta: "12 ข้อ",
+    howto: "ยกกีตาร์ส่องกับแสงไฟ หมุนดูรอบตัวทีละด้าน สังเกตขอบเอวที่บางล็อตพบว่าค่อนข้างคม",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-front.jpg', label: 'หน้า Body (Pale Moon Top)' },
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-back.jpg', label: 'หลัง Body' }
+    ],
+    items: [
+      "ด้านหน้าไม่มีรอยบุบ",
+      "ด้านหลังไม่มีรอยบุบ",
+      "ขอบ body ไม่มีรอยกระแทก (สังเกตขอบเอวที่ค่อนข้างคม)",
+      "ไม่มี finish ยกหรือพองเป็นฟองอากาศ",
+      "ไม่มีคราบกาวผิดปกติตามรอยต่อ",
+      "รอยต่อคอ (Neck joint) ไม่มีรอยแตก",
+      "ลายไม้ Pale Moon สวยและยอมรับได้ (ไม่เหมือนรูปโฆษณาได้ ไม่ใช่ปัญหา)",
+      "ไม่มีรอยแตกบนหน้าไม้ Top",
+      "ไม่มีรอย Dent (บุบ) บน Top",
+      "ไม่มีคราบกาวรั่วซึมจาก Top",
+      "ไม่มีรอยซ่อมที่ไม่ได้แจ้งล่วงหน้า",
+      "ไม่มีช่องว่างระหว่างชิ้นส่วนที่ผิดปกติ",
+    ]
+  },
+  {
+    title: "ตรวจรุ่นและสเปกให้ตรง",
+    meta: "9 ข้อ",
+    howto: "เทียบป้ายสเปกที่ตัวกีตาร์/กล่อง กับรายการนี้ทีละบรรทัด ทำได้ตอนไหนก็ได้แต่ควรยืนยันก่อนจ่ายเงิน",
+    items: [
+      "รุ่น: Cort KX507MS / Finish: Pale Moon",
+      "7 สาย, Multiscale 25.5–27 นิ้ว, Neutral Fret ที่เฟรต 8",
+      "Fishman Fluence Modern Humbucker Set (HH)",
+      "เฟรต 24 ตัว วัสดุ Stainless Steel (Jumbo)",
+      "Fingerboard: Macassar Ebony รัศมี 16 นิ้ว",
+      "Nut: Black PPS กว้าง 52.3 มม.",
+      "Locking Tuners ยี่ห้อ Cort",
+      "บริดจ์แบบ Individual String-through-body",
+      "อุปกรณ์ครบ: ใบรับประกัน ใบเสร็จ กล่อง/กระเป๋า",
+    ]
+  },
+  {
+    title: "ตรวจ Nut โดยละเอียด",
+    meta: "6 ข้อ",
+    howto: "ดีดสายเปล่าไล่จากสาย 7→1 แล้วกดทุกสายที่เฟรต 1",
+    items: [
+      "สายเปล่าทุกสายดังชัดเจน",
+      "ไม่มีเสียงแตกหรือสั่นผิดปกติที่ร่อง Nut",
+      "ไม่มีสายติดร่อง Nut",
+      "กดสายทุกสายที่เฟรต 1 ได้ปกติ",
+      "ไม่มีเสียงเพี้ยนผิดปกติที่เฟรต 1",
+      "ไม่ต้องออกแรงกดมากเกินไปที่เฟรต 1",
+    ]
+  },
+  {
+    title: "ตรวจ Bridge / Saddle",
+    meta: "8 ข้อ",
+    howto: "ดีดสาย 7 แรง ๆ แล้วฟังเสียงจากบริดจ์",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-pickupbridgeandBridge.jpg', label: 'เช็ค Bridge (Individual)' }
+    ],
+    items: [
+      "Saddle ทุกตัวอยู่ในสภาพปกติ",
+      "ไม่มีชิ้นส่วนโยกคลอน",
+      "ไม่มีสกรูหลวมผิดปกติ",
+      "ไม่มีสนิม",
+      "แนวสายตรงปกติ ไม่เยื้องรูขันสาย",
+      "ไม่มีเสียงโลหะสั่นผิดปกติ",
+      "ไม่มีเสียง 'กริ๊ง/แกร๊ก' จากบริดจ์เวลาดีดแรง",
+      "ไม่มีเสียงโลหะสั่นค้าง",
+    ]
+  },
+  {
+    title: "ตรวจ Locking Tuners",
+    meta: "7 ข้อ",
+    howto: "หมุน Tuner ทีละตัวให้ครบ 7 ตัว แล้วตั้งสายเล่นแรง ๆ ดูความนิ่ง",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-backheadstock.jpg', label: 'ลูกบิดล็อกสาย Cort' }
+    ],
+    items: [
+      "หมุนลื่น ไม่ฝืด",
+      "ไม่มีจุดฝืดหนักผิดปกติ",
+      "ไม่มีเสียงกึกกักผิดปกติ",
+      "ไม่มีแกน Tuner โยก",
+      "Knob ล็อกสายไม่โยกมาก",
+      "Tuning กลับมาค่อนข้างคงที่หลังเล่นแรง",
+      "ไม่มีสายคลายตัวผิดปกติ",
+    ]
+  },
+  {
+    title: "ทดสอบ Tuning ที่จะใช้เล่นจริง",
+    meta: "5 ข้อ",
+    howto: "อย่าทดสอบเฉพาะ Standard — Setup ที่ดีใน Standard ไม่ได้แปลว่าดีใน Tuning ต่ำ",
+    items: [
+      "ตั้ง Tuning จริงที่จะใช้ (เช่น Drop A) แล้วเล่นริฟฟ์ทดสอบ",
+      "ตรวจสาย 7 ซ้ำใน Tuning นี้",
+      "ตรวจ Intonation ซ้ำใน Tuning นี้",
+      "ตรวจความตึงของสายว่าหย่อนเกินไปหรือไม่",
+      "ถ้าจะเล่น Drop G#/G/F# ควรทดสอบจริงก่อนซื้อถ้าเป็นไปได้",
+    ]
+  },
+  {
+    title: "ตรวจ Truss Rod (ห้ามหมุนเอง)",
+    meta: "4 ข้อ",
+    howto: "ให้ช่างร้านเป็นผู้ตรวจและสาธิตให้ดู ห้ามหมุนเองเด็ดขาด",
+    items: [
+      "Truss rod nut ไม่เสียหาย",
+      "ไม่มีรอยไขควงหมุนหนักผิดปกติ",
+      "ช่างสามารถปรับได้จริงเมื่อสาธิต",
+      "Neck relief ปรับได้ตามปกติ",
+    ]
+  },
+  {
+    title: "ตรวจ Neck Joint",
+    meta: "4 ข้อ",
+    howto: "ดูจุดต่อระหว่างคอกับตัวกีตาร์ให้ละเอียด",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-backneck.jpg', label: 'รอยต่อคอกับบอดี้' }
+    ],
+    items: [
+      "ไม่มีรอยแตก (Crack)",
+      "ไม่มีช่องว่าง (Gap) ใหญ่ผิดปกติ",
+      "ไม่มีรอยแยก",
+      "คอไม่เอียงผิดธรรมชาติจากจุดต่อ",
+    ]
+  },
+  {
+    title: "ตรวจ Headstock",
+    meta: "4 ข้อ",
+    howto: "ดูให้ละเอียดโดยเฉพาะจุดหลัง Nut ซึ่งเป็นจุดที่หักง่ายที่สุด",
+    images: [
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-frontheadstock.jpg', label: 'หน้า Headstock' },
+      { src: 'images/cort-kx507-pale-moon-electric-guitar-gal-backheadstock.jpg', label: 'หลัง Headstock / รอยต่อ Nut' }
+    ],
+    items: [
+      "ไม่มีรอยแตกโดยเฉพาะบริเวณหลัง Nut",
+      "โลโก้ Cort ปกติ ไม่เพี้ยน",
+      "Tuner ทุกตัวยึดแน่นกับ Headstock",
+      "ไม่มีรอยกระแทก",
+    ]
+  },
+  {
+    title: "ตรวจสมดุลตอนสะพาย (Ergonomics/น้ำหนัก)",
+    meta: "8 ข้อ",
+    howto: "สะพายสายสะพายจริง ยืนเล่นต่อเนื่อง 5–10 นาที บางรีวิวของรุ่นนี้ระบุว่าอาจมีอาการ Neck dive ควรตรวจให้แน่ใจ",
+    items: [
+      "คอไม่ตกลง (ไม่มี Neck dive)",
+      "Headstock ไม่หนักเกินไป",
+      "Body ไม่กดตัวเวลานั่ง/ยืน",
+      "มือซ้ายไม่ต้องคอยพยุงคอ",
+      "เล่นเฟรตสูงได้สะดวก",
+      "นั่งเล่นได้สบาย",
+      "น้ำหนักโดยรวมรับได้ ไม่เมื่อยไหล่",
+      "ไม่ทำให้คอกีตาร์พุ่งลงเพราะน้ำหนักไม่สมดุล",
+    ]
+  },
+  {
+    title: "ตรวจสถานะสินค้า",
+    meta: "5 ข้อ",
+    howto: "ถามพนักงานให้ชัดเจนก่อนตัดสินใจ",
+    items: [
+      "เป็นของใหม่ 100%",
+      "ไม่ใช่ B-stock",
+      "ไม่ใช่ตัวเคลมประกัน",
+      "ไม่ใช่ตัวที่เคยซ่อม",
+      "ไม่ใช่ตัว Display ที่ผ่านการใช้งานหนัก (ถ้าใช่ ให้ขอส่วนลด+ตรวจละเอียดขึ้น)",
+    ]
+  },
+  {
+    title: "ก่อนจ่ายเงิน — ให้ร้าน Setup แล้วตรวจซ้ำ",
+    meta: "8 ข้อ",
+    howto: "ถ้าพบปัญหาระดับ Setup ได้เท่านั้น (ไม่ใช่ Deal-breaker) ให้ร้านแก้ทุกข้อนี้ก่อนเซ็นรับ",
+    items: [
+      "Neck relief ปรับแล้ว",
+      "Action ปรับแล้ว",
+      "Intonation ปรับแล้ว",
+      "Pickup height ปรับแล้ว",
+      "Fret buzz แก้แล้ว",
+      "Nut ปรับแล้ว (ถ้าจำเป็น)",
+      "Tuning stability ตรวจแล้ว",
+      "Electronics ตรวจซ้ำแล้ว ไม่มี Crackle",
+    ]
+  },
+];
+
+const STORAGE_KEY = 'kx507ms-checklist-state';
+let state = { inspectorName: '', items: {} };
+let storageAvailable = true;
+let saveTimer = null;
+
+function setSaveStatus(mode, text){
+  const el = document.getElementById('saveStatus');
+  const t = document.getElementById('saveStatusText');
+  el.className = 'save-status' + (mode ? ' ' + mode : '');
+  t.textContent = text;
+}
+
+async function loadState(){
+  try {
+    if (typeof localStorage === 'undefined') throw new Error('no localStorage');
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state = Object.assign({ inspectorName:'', items:{} }, parsed);
+      setSaveStatus('saved', 'โหลดข้อมูลที่บันทึกไว้ในเครื่องนี้แล้ว');
+    } else {
+      setSaveStatus('', 'พร้อมบันทึกอัตโนมัติในเครื่องนี้');
+    }
+  } catch(e) {
+    storageAvailable = false;
+    setSaveStatus('', 'เบราว์เซอร์นี้บล็อกการบันทึก — ข้อมูลจะหายเมื่อปิดหน้าจอ');
+  }
+}
+
+function saveStateNow(){
+  if (!storageAvailable) return;
+  setSaveStatus('saving', 'กำลังบันทึก...');
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    setSaveStatus('saved', 'บันทึกในเครื่องนี้แล้ว');
+  } catch(e) {
+    setSaveStatus('', 'บันทึกไม่สำเร็จ (พื้นที่เก็บข้อมูลเต็มหรือถูกบล็อก)');
+  }
+}
+
+function saveStateDebounced(){
+  if (!storageAvailable) return;
+  setSaveStatus('saving', 'กำลังพิมพ์...');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveStateNow, 600);
+}
+
+async function clearState(){
+  state = { inspectorName: '', items: {} };
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  location.reload();
+}
+
+function openModal(src) {
+  document.getElementById('modalImg').src = src;
+  document.getElementById('imgModal').classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target.id === 'imgModal' || e.target.classList.contains('modal-close')) {
+    document.getElementById('imgModal').classList.remove('active');
+    document.getElementById('modalImg').src = "";
+  }
+}
+
+const container = document.getElementById('sections');
+let allCheckboxes = [];
+let criticalCheckboxes = [];
+
+function buildSections(){
+DATA.forEach((sec, si) => {
+  const section = document.createElement('div');
+  section.className = 'section' + (sec.critical ? ' critical' : '');
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div class="left">
+      <div class="section-num">${String(si+1).padStart(2,'0')}</div>
+      <div>
+        <div class="section-title">${sec.title}${sec.critical ? '<span class="crit-tag">ห้ามพลาด</span>' : ''}</div>
+        <div class="section-meta">${sec.meta}</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;flex-shrink:0;">
+      <span class="section-badge" data-badge>0/${sec.items.length}</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M6 9l6 6 6-6"/>
+      </svg>
+    </div>
+  `;
+
+  const body = document.createElement('div');
+  body.className = 'section-body';
+
+  const howto = document.createElement('div');
+  howto.className = 'howto';
+  howto.innerHTML = `<b>วิธีทำ:</b> ${sec.howto}`;
+  
+  // แทรกปุ่มดูรูปภาพถ้าหมวดนี้มีรูปภาพอ้างอิง
+  if (sec.images && sec.images.length > 0) {
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'ref-images-wrap';
+    sec.images.forEach(img => {
+      const btn = document.createElement('button');
+      btn.className = 'ref-btn';
+      btn.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> ดูรูป: ${img.label}`;
+      btn.onclick = (e) => {
+        e.stopPropagation(); // ไม่ให้ accordion พับ/กาง เวลาโดนปุ่ม
+        openModal(img.src);
+      };
+      imgWrap.appendChild(btn);
+    });
+    howto.appendChild(imgWrap);
+  }
+
+  body.appendChild(howto);
+
+  const inner = document.createElement('div');
+  const badge = head.querySelector('[data-badge]');
+
+  sec.items.forEach((text, ii) => {
+    const key = `s${si}-i${ii}`;
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `
+      <div class="item-status"></div>
+      <div class="item-main">
+        <div class="item-row">
+          <input type="checkbox" class="checkbox" data-key="${key}">
+          <div class="item-text">${text}</div>
+        </div>
+        <div class="item-actions">
+          <button class="comment-toggle" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="ctlabel">เพิ่มคอมเมนต์</span>
+          </button>
+        </div>
+        <div class="comment-box">
+          <textarea placeholder="บันทึกสิ่งที่พบ เช่น buzz เล็กน้อยที่เฟรต 12 สาย 7..." data-key="${key}"></textarea>
+        </div>
+      </div>
+    `;
+
+    const cb = item.querySelector('.checkbox');
+    const toggle = item.querySelector('.comment-toggle');
+    const ctlabel = item.querySelector('.ctlabel');
+    const cbox = item.querySelector('.comment-box');
+    const textarea = item.querySelector('textarea');
+
+    function refreshCommentUI(){
+      const has = textarea.value.trim().length > 0;
+      ctlabel.textContent = has ? 'มีคอมเมนต์' : 'เพิ่มคอมเมนต์';
+      let cnt = toggle.querySelector('.cnt');
+      if(has && !cnt){
+        cnt = document.createElement('span');
+        cnt.className = 'cnt';
+        cnt.textContent = '1';
+        toggle.appendChild(cnt);
+      } else if(!has && cnt){
+        cnt.remove();
+      }
+    }
+
+    // apply saved state
+    const saved = state.items[key];
+    if (saved) {
+      if (saved.checked) { cb.checked = true; item.classList.add('checked'); }
+      if (saved.comment) { textarea.value = saved.comment; refreshCommentUI(); cbox.classList.add('open'); }
+    }
+
+    cb.addEventListener('change', () => {
+      item.classList.toggle('checked', cb.checked);
+      const done = inner.querySelectorAll('.checkbox:checked').length;
+      badge.textContent = `${done}/${sec.items.length}`;
+      state.items[key] = state.items[key] || {};
+      state.items[key].checked = cb.checked;
+      saveStateNow();
+      updateProgress();
+    });
+
+    toggle.addEventListener('click', () => {
+      cbox.classList.toggle('open');
+      if(section.classList.contains('open')){
+        // ปรับความสูงเพื่อให้ textarea แสดงผลได้สมบูรณ์
+        body.style.maxHeight = body.scrollHeight + 200 + 'px';
+      }
+    });
+
+    textarea.addEventListener('input', () => {
+      refreshCommentUI();
+      state.items[key] = state.items[key] || {};
+      state.items[key].comment = textarea.value;
+      saveStateDebounced();
+    });
+
+    inner.appendChild(item);
+    allCheckboxes.push(cb);
+    if(sec.critical) criticalCheckboxes.push(cb);
+  });
+
+  const doneInit = inner.querySelectorAll('.checkbox:checked').length;
+  badge.textContent = `${doneInit}/${sec.items.length}`;
+
+  body.appendChild(inner);
+  section.appendChild(head);
+  section.appendChild(body);
+  container.appendChild(section);
+
+  head.addEventListener('click', () => {
+    const isOpen = section.classList.contains('open');
+    if (isOpen) {
+      body.style.maxHeight = null;
+      section.classList.remove('open');
+    } else {
+      section.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 100 + 'px'; // +100 เผื่อเปิดคอมเมนต์กล่องล่างๆ
+    }
+  });
+});
+}
+
+function updateProgress(){
+  const total = allCheckboxes.length;
+  const done = allCheckboxes.filter(c => c.checked).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = `${done}/${total}`;
+  document.getElementById('finalScore').textContent = pct + '%';
+
+  const critTotal = criticalCheckboxes.length;
+  const critDone = criticalCheckboxes.filter(c => c.checked).length;
+  const verdict = document.getElementById('finalVerdict');
+
+  if (critDone < critTotal) {
+    verdict.textContent = `ยังตรวจหมวด 1 ไม่ครบ (${critDone}/${critTotal}) — ตรวจให้ครบก่อนตัดสินใจ`;
+    verdict.style.color = 'var(--muted)';
+  } else if (done === total) {
+    verdict.textContent = '✅ ตรวจครบทุกข้อแล้ว — พร้อมสรุปผลกับพนักงาน';
+    verdict.style.color = 'var(--purple)';
+  } else {
+    verdict.textContent = `หมวด 1 ผ่านครบแล้ว — ตรวจหมวดที่เหลือต่อได้ (${done}/${total})`;
+    verdict.style.color = 'var(--orange)';
+  }
+}
+
+async function init(){
+  await loadState();
+  buildSections();
+
+  const nameInput = document.getElementById('inspectorName');
+  nameInput.value = state.inspectorName || '';
+  nameInput.addEventListener('input', () => {
+    state.inspectorName = nameInput.value;
+    saveStateDebounced();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('ล้างข้อมูลทั้งหมดที่บันทึกไว้ (ชื่อผู้ตรวจ, ข้อที่ติ๊ก, คอมเมนต์) แล้วเริ่มใหม่?')) {
+      clearState();
+    }
+  });
+
+  // กางหมวดแรกสุด(สำคัญสุด) ทิ้งไว้ให้โดยอัตโนมัติ
+  container.firstElementChild.querySelector('.section-head').click();
+
+  updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
+
+
+
+Gemini เป็น AI และอาจทำผิดพลาดได้
+
