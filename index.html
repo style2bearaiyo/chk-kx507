@@ -127,7 +127,7 @@
   .swipe-wrapper{
     position:relative;
     height:250px;
-    margin:20px 0;
+    margin:16px 0 12px;
     background:var(--surface);
     border-radius:16px;
     border:1px solid #3B2450;
@@ -227,6 +227,45 @@
     line-height:1.6;
   }
   .item-bullets li{ margin-bottom:2px; }
+
+  /* Quick Selection Buttons (Tap/Click Support) */
+  .action-buttons{
+    display:flex;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .btn-action{
+    flex:1;
+    padding:12px 16px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    transition:all .15s ease;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  }
+  .btn-pass{
+    background:var(--green);
+    color:#fff;
+  }
+  .btn-pass:active{
+    transform:scale(0.96);
+    background:#3e8057;
+  }
+  .btn-fail{
+    background:var(--orange);
+    color:#fff;
+  }
+  .btn-fail:active{
+    transform:scale(0.96);
+    background:#d87e1b;
+  }
 
   /* Sub-checklist modal */
   .sub-check-list{
@@ -491,6 +530,12 @@
       </div>
     </div>
 
+    <!-- Quick Action Buttons (Tap/Click Selection) -->
+    <div class="action-buttons">
+      <button class="btn-action btn-pass" id="btnPass">✓ ผ่าน</button>
+      <button class="btn-action btn-fail" id="btnFail">✗ ไม่ผ่าน</button>
+    </div>
+
     <!-- Result modal -->
     <div class="modal-overlay" id="resultModal">
       <div class="result-card" id="resultCard">
@@ -655,10 +700,10 @@ const DATA = [
     ]
   },
   {
-    section: "Nut โดยละเอียด",
+    section: "Nut โดยรายละเอียด",
     critical: false,
     items: [
-      { num: 18, text: "Nut โดยละเอียด",
+      { num: 18, text: "Nut โดยรายละเอียด",
         bullets: ["สายเปล่าทุกสายดังชัด ไม่ติดร่อง Nut", "กดเฟรต 1 ได้ปกติ ไม่ต้องออกแรงมาก"],
         hint: "💡 ดีดสายเปล่าไล่ 7→1 แล้วกดเฟรต 1 ทุกสาย" },
     ]
@@ -770,6 +815,7 @@ function updateDisplay() {
   const item = getCurrentItem();
   if (!item) {
     document.getElementById('swipeCard').innerHTML = '<div style="text-align:center; padding:40px;"><div style="font-size:20px; color: var(--green); margin-bottom: 16px;">✓ ตรวจครบแล้ว!</div><div style="color: var(--muted);">ขอบคุณที่ใช้ checklist นี้</div></div>';
+    document.querySelector('.action-buttons').style.display = 'none';
     return;
   }
 
@@ -894,6 +940,25 @@ wrapper.addEventListener('pointerleave', () => {
     card.style.transform = 'translateX(0)';
     wrapper.classList.remove('swiping-left', 'swiping-right');
   }
+});
+
+// Click/Tap Button Handlers
+document.getElementById('btnPass').addEventListener('click', () => {
+  const item = getCurrentItem();
+  if (!item) return;
+  card.classList.add('swiped-left');
+  setTimeout(() => {
+    recordResult(item, true);
+  }, 150);
+});
+
+document.getElementById('btnFail').addEventListener('click', () => {
+  const item = getCurrentItem();
+  if (!item) return;
+  card.classList.add('swiped-right');
+  setTimeout(() => {
+    recordResult(item, false);
+  }, 150);
 });
 
 function recordResult(item, passed) {
