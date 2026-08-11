@@ -9,6 +9,7 @@
     --purple:#9A3FE0;
     --orange:#F0932B;
     --green:#4C9A6A;
+    --red:#E74C3C;
     --bg:#120B1A;
     --surface:#1C1226;
     --surface2:#251731;
@@ -462,6 +463,127 @@
     background:rgba(240,147,43,0.2);
   }
 
+  /* Summary Section Styling */
+  .summary-container{
+    display:none;
+    margin-top:20px;
+  }
+  .summary-card{
+    background:var(--surface);
+    border:1px solid #3B2450;
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .summary-header{
+    text-align:center;
+    margin-bottom:20px;
+  }
+  .summary-header h2{
+    font-size:18px;
+    color:var(--purple);
+    margin:0 0 6px;
+  }
+  .summary-meta{
+    font-size:12px;
+    color:var(--muted-dim);
+  }
+  .summary-stats{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .stat-box{
+    flex:1;
+    background:var(--surface2);
+    border-radius:10px;
+    padding:12px;
+    text-align:center;
+    border:1px solid #3B2450;
+  }
+  .stat-val{
+    font-size:22px;
+    font-weight:800;
+  }
+  .stat-val.pass{ color:var(--green); }
+  .stat-val.fail{ color:var(--orange); }
+  .stat-label{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  .summary-section-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+    margin:16px 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .summary-item-box{
+    background:var(--surface2);
+    border:1px solid #3B2450;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+    font-size:12px;
+  }
+  .summary-item-box.fail{
+    border-left:3px solid var(--orange);
+  }
+  .summary-item-box.pass{
+    border-left:3px solid var(--green);
+  }
+  .summary-item-title{
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .summary-item-title.fail-title{
+    color:var(--orange);
+  }
+  .summary-sub-issues{
+    color:var(--orange);
+    font-size:11.5px;
+    margin-top:4px;
+    background:rgba(240,147,43,0.1);
+    padding:6px 8px;
+    border-radius:6px;
+  }
+  .summary-comment{
+    color:var(--muted);
+    font-size:11.5px;
+    margin-top:6px;
+    font-style:italic;
+    background:rgba(167,143,196,0.1);
+    padding:6px 8px;
+    border-radius:6px;
+  }
+
+  .btn-copy-summary{
+    width:100%;
+    background:var(--purple);
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:all .2s ease;
+  }
+  .btn-copy-summary:active{
+    transform:scale(0.98);
+    opacity:0.9;
+  }
+
   @keyframes slideUp{
     from{
       transform:translateY(20px);
@@ -534,6 +656,35 @@
     <div class="action-buttons">
       <button class="btn-action btn-pass" id="btnPass">✓ ผ่าน</button>
       <button class="btn-action btn-fail" id="btnFail">✗ ไม่ผ่าน</button>
+    </div>
+
+    <!-- Summary Container -->
+    <div class="summary-container" id="summaryContainer">
+      <div class="summary-card">
+        <div class="summary-header">
+          <h2>📋 รายงานสรุปผลการตรวจรับ</h2>
+          <div class="summary-meta" id="summaryMeta">ผู้ตรวจ: -</div>
+        </div>
+
+        <div class="summary-stats">
+          <div class="stat-box">
+            <div class="stat-val pass" id="statPassCount">0</div>
+            <div class="stat-label">ผ่าน</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val fail" id="statFailCount">0</div>
+            <div class="stat-label">ไม่ผ่าน</div>
+          </div>
+        </div>
+
+        <!-- Failed Items Section -->
+        <div id="failedItemsSection"></div>
+
+        <!-- Passed Items with Comments Section -->
+        <div id="commentedItemsSection"></div>
+
+        <button class="btn-copy-summary" id="btnCopySummary">📋 คัดลอกรายงานสรุปไปส่งต่อ</button>
+      </div>
     </div>
 
     <!-- Result modal -->
@@ -776,6 +927,16 @@ let allSections = [];
 let currentSectionIdx = 0;
 let currentItemInSectionIdx = 0;
 
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 function initData() {
   allSections = [];
   let itemCount = 0;
@@ -814,13 +975,15 @@ function nextItem() {
 function updateDisplay() {
   const item = getCurrentItem();
   if (!item) {
-    document.getElementById('swipeCard').innerHTML = '<div style="text-align:center; padding:40px;"><div style="font-size:20px; color: var(--green); margin-bottom: 16px;">✓ ตรวจครบแล้ว!</div><div style="color: var(--muted);">ขอบคุณที่ใช้ checklist นี้</div></div>';
-    document.querySelector('.action-buttons').style.display = 'none';
+    renderSummaryPage();
     return;
   }
 
-  const itemData = state.items[item.key];
-  
+  document.getElementById('swipeWrapper').style.display = 'block';
+  document.querySelector('.action-buttons').style.display = 'flex';
+  document.getElementById('sectionBadge').style.display = 'inline-block';
+  document.getElementById('summaryContainer').style.display = 'none';
+
   document.getElementById('itemSection').textContent = item.section;
   document.getElementById('itemNumber').textContent = `ข้อที่ ${item.num}`;
   document.getElementById('itemText').textContent = item.text;
@@ -839,6 +1002,144 @@ function updateDisplay() {
   updateProgress();
 }
 
+function renderSummaryPage() {
+  document.getElementById('swipeWrapper').style.display = 'none';
+  document.querySelector('.action-buttons').style.display = 'none';
+  document.getElementById('sectionBadge').style.display = 'none';
+  
+  const summaryContainer = document.getElementById('summaryContainer');
+  summaryContainer.style.display = 'block';
+
+  let passCount = 0;
+  let failCount = 0;
+  let failedHtml = '';
+  let commentedPassHtml = '';
+
+  DATA.forEach((sec, sIdx) => {
+    sec.items.forEach((item, iIdx) => {
+      const key = `${sIdx}-${iIdx}`;
+      const itemData = state.items[key];
+
+      if (itemData) {
+        if (itemData.passed) {
+          passCount++;
+          if (itemData.comment && itemData.comment.trim() !== '') {
+            commentedPassHtml += `
+              <div class="summary-item-box pass">
+                <div class="summary-item-title">✓ ข้อที่ ${item.num}: ${escapeHtml(item.text)}</div>
+                <div class="summary-comment">💬 คอมเมนต์: ${escapeHtml(itemData.comment)}</div>
+              </div>`;
+          }
+        } else {
+          failCount++;
+          const critData = state.failedCritical.find(f => f.key === key);
+          let subTextHtml = '';
+          if (critData && critData.subIssues && critData.subIssues.length > 0) {
+            subTextHtml = `<div class="summary-sub-issues">❌ รายละเอียดปัญหา: ${critData.subIssues.map(s => escapeHtml(s)).join(', ')}</div>`;
+          }
+
+          const commentHtml = (itemData.comment && itemData.comment.trim() !== '') 
+            ? `<div class="summary-comment">💬 คอมเมนต์: ${escapeHtml(itemData.comment)}</div>` 
+            : '';
+
+          failedHtml += `
+            <div class="summary-item-box fail">
+              <div class="summary-item-title fail-title">✗ ข้อที่ ${item.num}: ${escapeHtml(item.text)}</div>
+              ${subTextHtml}
+              ${commentHtml}
+            </div>`;
+        }
+      }
+    });
+  });
+
+  const inspector = state.inspectorName ? state.inspectorName : 'ไม่ระบุชื่อ';
+  document.getElementById('summaryMeta').textContent = `ผู้ตรวจ: ${inspector} · Cort KX507MS`;
+  document.getElementById('statPassCount').textContent = passCount;
+  document.getElementById('statFailCount').textContent = failCount;
+
+  // Failed Items Render
+  const failedSec = document.getElementById('failedItemsSection');
+  if (failCount > 0) {
+    failedSec.innerHTML = `
+      <div class="summary-section-title" style="color:var(--orange);">
+        <span>❌ รายการที่ไม่ผ่าน (${failCount} ข้อ)</span>
+      </div>
+      ${failedHtml}
+    `;
+  } else {
+    failedSec.innerHTML = `
+      <div class="summary-section-title" style="color:var(--green);">
+        <span>🎉 ตรวจผ่านครบทุกข้อทุกจุด!</span>
+      </div>
+    `;
+  }
+
+  // Commented Passed Items Render
+  const commentSec = document.getElementById('commentedItemsSection');
+  if (commentedPassHtml !== '') {
+    commentSec.innerHTML = `
+      <div class="summary-section-title">
+        <span>💬 คอมเมนต์เพิ่มเติม (ข้อที่ผ่าน)</span>
+      </div>
+      ${commentedPassHtml}
+    `;
+  } else {
+    commentSec.innerHTML = '';
+  }
+
+  updateProgress();
+}
+
+function generateTextReport() {
+  const inspector = state.inspectorName ? state.inspectorName : 'ไม่ระบุชื่อ';
+  let passCount = 0;
+  let failCount = 0;
+  let failedText = '';
+  let commentText = '';
+
+  DATA.forEach((sec, sIdx) => {
+    sec.items.forEach((item, iIdx) => {
+      const key = `${sIdx}-${iIdx}`;
+      const itemData = state.items[key];
+
+      if (itemData) {
+        if (itemData.passed) {
+          passCount++;
+          if (itemData.comment && itemData.comment.trim() !== '') {
+            commentText += `- ข้อที่ ${item.num} (${item.text}): ${itemData.comment}\n`;
+          }
+        } else {
+          failCount++;
+          const critData = state.failedCritical.find(f => f.key === key);
+          let subStr = '';
+          if (critData && critData.subIssues && critData.subIssues.length > 0) {
+            subStr = ` [ปัญหา: ${critData.subIssues.join(', ')}]`;
+          }
+          let cmtStr = (itemData.comment && itemData.comment.trim() !== '') ? ` (หมายเหตุ: ${itemData.comment})` : '';
+          failedText += `- ข้อที่ ${item.num}: ${item.text}${subStr}${cmtStr}\n`;
+        }
+      }
+    });
+  });
+
+  let report = `📋 รายงานสรุปผลการตรวจรับกีตาร์ Cort KX507MS\n`;
+  report += `ผู้ตรวจ: ${inspector}\n`;
+  report += `ผลการตรวจ: ผ่าน ${passCount} ข้อ / ไม่ผ่าน ${failCount} ข้อ\n\n`;
+
+  if (failCount > 0) {
+    report += `❌ รายการที่ไม่ผ่าน:\n${failedText}\n`;
+  } else {
+    report += `🎉 ผ่านการตรวจรับทุกข้อสมบูรณ์!\n\n`;
+  }
+
+  if (commentText !== '') {
+    report += `💬 คอมเมนต์เพิ่มเติม:\n${commentText}`;
+  }
+
+  return report;
+}
+
 function updateProgress() {
   let passed = 0;
   for (let key in state.items) {
@@ -850,7 +1151,7 @@ function updateProgress() {
   document.getElementById('progressCount').textContent = `${passed}/${state.totalItems}`;
   
   if (passed === state.totalItems) {
-    document.getElementById('completionStatus').innerHTML = '<b style="color: var(--green);">✓ ตรวจครบแล้ว</b>';
+    document.getElementById('completionStatus').innerHTML = '<b style="color: var(--green);">✓ ตรวจครบแล้ว (กำลังแสดงหน้าสรุป)</b>';
   } else {
     document.getElementById('completionStatus').textContent = `ตรวจแล้ว ${passed}/${state.totalItems} การ์ด`;
   }
@@ -961,6 +1262,15 @@ document.getElementById('btnFail').addEventListener('click', () => {
   }, 150);
 });
 
+document.getElementById('btnCopySummary').addEventListener('click', () => {
+  const text = generateTextReport();
+  navigator.clipboard.writeText(text).then(() => {
+    alert('คัดลอกรายงานสรุปเรียบร้อยแล้ว! สามารถนำไปวางส่งต่อได้เลย');
+  }).catch(() => {
+    alert('ไม่สามารถคัดลอกได้อัตโนมัติ');
+  });
+});
+
 function recordResult(item, passed) {
   state.items[item.key] = { passed, comment: '' };
   saveState();
@@ -983,7 +1293,7 @@ function showSubCheckModal(item) {
   list.innerHTML = item.subItems.map((sub, idx) => `
     <label class="sub-check-item">
       <input type="checkbox" data-sub="${idx}">
-      <span>${sub}</span>
+      <span>${escapeHtml(sub)}</span>
     </label>
   `).join('');
 
@@ -1046,12 +1356,12 @@ function showDealBreakerModal() {
   const failedItems = state.failedCritical
     .map(f => {
       const subText = (f.subIssues && f.subIssues.length)
-        ? f.subIssues.map(s => `<div class="critical-text">❌ ${s}</div>`).join('')
-        : `<div class="critical-text">❌ ${f.text}</div>`;
+        ? f.subIssues.map(s => `<div class="critical-text">❌ ${escapeHtml(s)}</div>`).join('')
+        : `<div class="critical-text">❌ ${escapeHtml(f.text)}</div>`;
       return `
         <div class="critical-item">
           ${subText}
-          <div class="critical-section">${f.section} — ${f.text}</div>
+          <div class="critical-section">${escapeHtml(f.section)} — ${escapeHtml(f.text)}</div>
         </div>
       `;
     }).join('');
@@ -1105,6 +1415,9 @@ document.getElementById('restartBtn').addEventListener('click', () => {
 document.getElementById('inspectorName').addEventListener('input', (e) => {
   state.inspectorName = e.target.value;
   saveState();
+  if (getCurrentItem() === null) {
+    renderSummaryPage();
+  }
 });
 
 document.getElementById('resetAllBtn').addEventListener('click', () => {
