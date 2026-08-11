@@ -2,905 +2,1054 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Checklist ตรวจรับกีตาร์ — Cort KX507MS Pale Moon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Checklist ตรวจรับกีตาร์ — Cort KX507MS</title>
 <style>
   :root{
+    --purple:#9A3FE0;
+    --orange:#F0932B;
+    --green:#4C9A6A;
     --bg:#120B1A;
     --surface:#1C1226;
     --surface2:#251731;
-    --border:#3B2450;
-    --purple:#9A3FE0;
-    --purple-deep:#6E2AA8;
-    --purple-soft:#9A3FE026;
-    --orange:#F0932B;
-    --orange-soft:#F0932B26;
-    --orange-deep:#C46A16;
-    --red:#FF4757;
-    --red-soft:#FF475726;
     --text:#F4EEFA;
     --muted:#A78FC4;
     --muted-dim:#7A628F;
   }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{
-    margin:0; padding:0; width:100%; height:100%;
-    overflow-x:hidden; background:radial-gradient(circle at 50% -10%, #251531 0%, var(--bg) 60%);
-    color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    -webkit-font-smoothing:antialiased;
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,sans-serif;
+    padding:16px 0;
+    min-height:100vh;
+    overflow-x:hidden;
   }
 
-  /* ---------- Top Bar ---------- */
+  .container{
+    max-width:420px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+
+  /* Top bar */
   .topbar{
-    position:sticky; top:0; z-index:50;
-    background:linear-gradient(180deg,#1A1024 0%, #120B1A 100%);
-    border-bottom:1px solid var(--border);
-    padding:12px 16px 10px;
-    box-shadow:0 4px 20px #00000066;
+    position:sticky;top:0;z-index:10;
+    background:linear-gradient(180deg, rgba(18,11,26,0.95) 0%, rgba(18,11,26,0.9) 100%);
+    border-bottom:1px solid #3B2450;
+    padding:16px;
+    margin:-16px -16px 0 -16px;
+    backdrop-filter:blur(8px);
   }
-  .topbar-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-  .topbar .eyebrow{ font-size:10px; letter-spacing:2px; color:var(--orange); font-weight:800; text-transform:uppercase; }
-  
-  .mode-toggle-btn{
-    background:var(--surface2); border:1px solid var(--border); color:var(--purple);
-    padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700;
-    cursor:pointer; display:flex; align-items:center; gap:5px; transition:all .2s;
+  .topbar h1{
+    font-size:16px;
+    font-weight:700;
+    margin:0 0 2px;
+    color:var(--purple);
   }
-  .mode-toggle-btn:hover{ border-color:var(--purple); background:var(--purple-soft); }
-
-  .progress-wrap{ display:flex; align-items:center; gap:10px; }
+  .topbar .subtitle{
+    font-size:12px;
+    color:var(--muted-dim);
+    margin-bottom:12px;
+  }
+  .progress-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
   .progress-track{
-    flex:1; height:8px; border-radius:6px; background:var(--surface2);
-    overflow:hidden; border:1px solid var(--border);
+    flex:1;
+    height:6px;
+    background:var(--surface2);
+    border-radius:3px;
+    overflow:hidden;
+    border:1px solid #3B2450;
   }
   .progress-fill{
-    height:100%; width:0%;
-    background:linear-gradient(90deg, var(--purple-deep), var(--purple) 70%, var(--orange));
+    height:100%;
+    background:linear-gradient(90deg, var(--purple), var(--orange));
+    width:0%;
     transition:width .3s ease;
   }
-  .progress-count{ font-size:11px; color:var(--orange); font-weight:800; white-space:nowrap; }
-
-  .save-status{ font-size:10px; color:var(--muted-dim); margin-top:4px; display:flex; align-items:center; gap:5px; }
-  .save-status .dot{ width:5px; height:5px; border-radius:50%; background:var(--muted-dim); transition:background .2s; }
-  .save-status.saved .dot{ background:var(--purple); box-shadow:0 0 6px var(--purple); }
-
-  /* ---------- Main View Containers ---------- */
-  .container{ max-width:480px; margin:0 auto; padding:12px; display:flex; flex-direction:column; min-height:calc(100vh - 85px); }
-
-  .inspector-card{
-    background:var(--surface); border:1px solid var(--border); border-radius:12px;
-    padding:8px 12px; margin-bottom:12px; display:flex; align-items:center; gap:10px; flex-shrink:0;
-  }
-  .inspector-card label{ font-size:11px; color:var(--muted); font-weight:700; white-space:nowrap; }
-  .inspector-card input{
-    flex:1; background:var(--surface2); border:1px solid var(--border); border-radius:6px;
-    color:var(--text); font-size:13px; padding:6px 10px; outline:none;
-  }
-  .inspector-card input:focus{ border-color:var(--purple); }
-
-  /* ---------- View Modes ---------- */
-  .view-mode{ display:none; flex-direction:column; flex:1; }
-  .view-mode.active{ display:flex; }
-
-  /* ---------- Tinder Card Deck Container ---------- */
-  .deck-container{
-    flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;
-    position:relative; min-height:420px; margin-bottom:15px;
-  }
-  .card-stack{
-    width:100%; max-width:380px; height:390px; position:relative;
-    touch-action:none; user-select:none; -webkit-user-select:none;
+  .progress-count{
+    font-size:12px;
+    color:var(--orange);
+    font-weight:700;
+    white-space:nowrap;
   }
 
-  /* Individual Tinder Card */
-  .tinder-card{
-    position:absolute; width:100%; height:100%; border-radius:20px;
-    background:var(--surface); border:1.5px solid var(--border);
-    box-shadow:0 12px 30px #00000088; padding:20px;
-    display:flex; flex-direction:column; justify-content:space-between;
-    cursor:grab; will-change:transform; transition:transform 0.2s ease, opacity 0.2s ease;
+  .inspector-input{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:12px;
+    font-size:12px;
   }
-  .tinder-card:active{ cursor:grabbing; }
-  
-  /* Stack Depth Effect */
-  .tinder-card.card-next{ transform:scale(0.94) translateY(16px); z-index:1; opacity:0.8; pointer-events:none; }
-  .tinder-card.card-next-2{ transform:scale(0.88) translateY(32px); z-index:0; opacity:0.4; pointer-events:none; }
-  .tinder-card.card-top{ z-index:2; }
-
-  .card-tag{
-    display:inline-flex; align-items:center; gap:5px;
-    font-size:11px; font-weight:800; padding:4px 10px; border-radius:12px;
-    background:var(--surface2); border:1px solid var(--border); color:var(--purple);
-    align-self:flex-start; margin-bottom:10px;
+  .inspector-input label{
+    color:var(--muted-dim);
+    white-space:nowrap;
   }
-  .card-tag.critical{ color:var(--orange); border-color:var(--orange-soft); background:var(--orange-soft); }
-
-  .card-body{ flex:1; display:flex; flex-direction:column; justify-content:center; }
-  .card-item-title{ font-size:18px; font-weight:800; line-height:1.4; color:var(--text); margin-bottom:12px; }
-  .card-howto{
-    font-size:12.5px; color:var(--muted); background:var(--surface2);
-    padding:10px 12px; border-radius:10px; border-left:3px solid var(--purple); line-height:1.5;
+  .inspector-input input{
+    flex:1;
+    background:var(--surface2);
+    border:1px solid #3B2450;
+    border-radius:6px;
+    color:var(--text);
+    padding:6px 10px;
+    font-size:12px;
+    font-family:inherit;
   }
-  .card-tag.critical + .card-body .card-howto{ border-left-color:var(--orange); }
-
-  .card-comment-wrap{ margin-top:10px; }
-  .card-comment-input{
-    width:100%; background:var(--surface2); border:1px solid var(--border);
-    border-radius:8px; color:var(--text); font-size:12px; padding:8px;
-    resize:none; height:45px; font-family:inherit; outline:none;
+  .inspector-input input::placeholder{
+    color:var(--muted-dim);
   }
-  .card-comment-input:focus{ border-color:var(--purple); }
-
-  .card-footer-info{
-    display:flex; justify-content:space-between; align-items:center;
-    font-size:10.5px; color:var(--muted-dim); margin-top:8px;
+  .inspector-input input:focus{
+    outline:none;
+    border-color:var(--purple);
   }
 
-  /* Stamp Overlay */
-  .stamp{
-    position:absolute; top:25px; padding:6px 16px; border-radius:8px;
-    font-size:22px; font-weight:900; letter-spacing:2px; text-transform:uppercase;
-    opacity:0; pointer-events:none; transition:opacity 0.1s ease; z-index:10;
+  /* Section indicator */
+  .section-badge{
+    display:inline-block;
+    font-size:10px;
+    font-weight:700;
+    color:var(--bg);
+    background:var(--purple);
+    padding:2px 8px;
+    border-radius:4px;
+    margin-top:12px;
   }
-  .stamp-pass{ right:20px; color:var(--purple); border:3px solid var(--purple); transform:rotate(12deg); }
-  .stamp-fail{ left:20px; color:var(--orange); border:3px solid var(--orange); transform:rotate(-12deg); }
-
-  /* ---------- Action Buttons Bar ---------- */
-  .action-bar{
-    display:flex; justify-content:center; align-items:center; gap:16px;
-    padding:10px 0; margin-top:auto;
+  .section-badge.critical{
+    background:var(--orange);
   }
-  .btn-action{
-    border:none; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow:0 6px 16px #00000055;
+
+  /* Swipe card container */
+  .swipe-wrapper{
+    position:relative;
+    height:250px;
+    margin:20px 0;
+    background:var(--surface);
+    border-radius:16px;
+    border:1px solid #3B2450;
+    overflow:hidden;
+    user-select:none;
+    cursor:grab;
   }
-  .btn-action:active{ transform:scale(0.88); }
-  
-  .btn-undo{ width:44px; height:44px; background:var(--surface2); border:1px solid var(--border); color:var(--muted); font-size:18px; }
-  .btn-fail{ width:60px; height:60px; background:var(--surface); border:2px solid var(--orange); color:var(--orange); font-size:26px; }
-  .btn-pass{ width:60px; height:60px; background:var(--surface); border:2px solid var(--purple); color:var(--purple); font-size:26px; }
-  .btn-comment-toggle{ width:44px; height:44px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:18px; }
+  .swipe-wrapper.grabbing{
+    cursor:grabbing;
+  }
 
-  /* ---------- List View Accordion ---------- */
-  .list-container{ display:flex; flex-direction:column; gap:8px; padding-bottom:20px; }
-  .section{ background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-  .section.critical{ border-color:var(--orange-deep); }
-  .section-head{ padding:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-  .section-title{ font-size:14px; font-weight:700; }
-  .section-body{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
-  .section.open .section-body{ border-top:1px solid var(--border); }
-  .list-item{ padding:10px 12px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:10px; }
-  .list-item-text{ font-size:13px; flex:1; }
-  .list-item-status{ font-size:11px; font-weight:800; padding:3px 8px; border-radius:6px; }
-  .status-pass{ background:var(--purple-soft); color:var(--purple); }
-  .status-fail{ background:var(--orange-soft); color:var(--orange); }
-  .status-none{ color:var(--muted-dim); }
+  .swipe-card{
+    position:absolute;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:24px;
+    transition:all .3s ease;
+    transform:translateX(0);
+    will-change:transform;
+  }
 
-  /* ---------- Deal-breaker Modal ---------- */
+  .swipe-card.swiped-left{
+    transform:translateX(-120%);
+    opacity:0;
+  }
+  .swipe-card.swiped-right{
+    transform:translateX(120%);
+    opacity:0;
+  }
+
+  .swipe-wrapper::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:linear-gradient(90deg, rgba(76,154,106,0.15) 0%, transparent 50%, rgba(240,147,43,0.15) 100%);
+    opacity:0;
+    transition:opacity .15s ease;
+    pointer-events:none;
+  }
+  .swipe-wrapper.swiping-left::before{ opacity:1; }
+  .swipe-wrapper.swiping-right::before{ opacity:1; }
+
+  .left-indicator, .right-indicator{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:32px;
+    font-weight:700;
+    opacity:0;
+    transition:opacity .1s ease;
+    z-index:1;
+    pointer-events:none;
+  }
+  .left-indicator{
+    left:20px;
+    color:var(--green);
+  }
+  .right-indicator{
+    right:20px;
+    color:var(--orange);
+  }
+  .swipe-wrapper.swiping-left .left-indicator{ opacity:1; }
+  .swipe-wrapper.swiping-right .right-indicator{ opacity:1; }
+
+  .item-section{
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-bottom:6px;
+  }
+  .item-number{
+    font-size:12px;
+    color:var(--purple);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .item-text{
+    font-size:16px;
+    line-height:1.5;
+    margin-bottom:12px;
+    flex:1;
+  }
+  .item-hint{
+    font-size:11px;
+    color:var(--muted-dim);
+  }
+  .item-bullets{
+    margin:0 0 10px;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .item-bullets li{ margin-bottom:2px; }
+
+  /* Sub-checklist modal */
+  .sub-check-list{
+    text-align:left;
+    margin:14px 0;
+  }
+  .sub-check-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    background:var(--surface2);
+    border:1px solid #3B2450;
+    border-radius:8px;
+    margin-bottom:8px;
+    cursor:pointer;
+  }
+  .sub-check-item input{
+    width:18px;height:18px;
+    accent-color:var(--orange);
+    flex-shrink:0;
+  }
+  .sub-check-item span{
+    font-size:13px;
+  }
+
+  /* Result modal */
   .modal-overlay{
-    display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    z-index:100; overflow-y:auto; background:rgba(10, 5, 18, 0.9); backdrop-filter:blur(6px);
-    align-items:center; justify-content:center; padding:20px;
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(4px);
+    z-index:100;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow-y:auto;
   }
-  .modal-overlay.open{ display:flex; }
-  .modal-content{
-    background:var(--surface); border:2px solid var(--orange);
-    border-radius:20px; padding:24px 20px; max-width:420px; width:100%; text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.8); animation:modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  @keyframes modalPop {
-    0% { transform:scale(0.85); opacity:0; }
-    100% { transform:scale(1); opacity:1; }
+  .modal-overlay.show{
+    display:flex;
   }
 
-  .modal-alert-badge{
-    display:inline-block; background:var(--orange-soft); border:1px solid var(--orange);
-    color:var(--orange); font-size:11px; font-weight:800; padding:4px 12px; border-radius:20px;
-    letter-spacing:1px; margin-bottom:10px; text-transform:uppercase;
+  .result-card{
+    background:var(--surface);
+    border-radius:16px;
+    border:2px solid;
+    padding:24px;
+    text-align:center;
+    max-width:360px;
+    width:100%;
+    animation:slideUp .3s ease;
   }
-  .modal-title-big{
-    font-size:34px; font-weight:900; color:var(--orange);
-    margin:0 0 12px 0; text-shadow:0 0 15px rgba(240, 147, 43, 0.3);
-    line-height:1.1;
+  .result-card.pass{
+    border-color:var(--green);
+    box-shadow:0 0 20px rgba(76,154,106,0.2);
   }
-  .failed-item-box{
-    background:var(--surface2); border:1.5px solid var(--orange); border-radius:12px;
-    padding:14px; margin:14px 0 20px; text-align:left;
+  .result-card.fail{
+    border-color:var(--orange);
+    box-shadow:0 0 20px rgba(240,147,43,0.2);
   }
-  .failed-item-label{ font-size:11px; color:var(--muted); font-weight:700; margin-bottom:4px; }
-  .failed-item-title{ font-size:15px; font-weight:800; color:var(--text); line-height:1.4; }
 
-  .modal-actions{ display:flex; flex-direction:column; gap:10px; }
-  .modal-btn{
-    width:100%; border:none; font-weight:800; padding:13px; border-radius:12px;
-    cursor:pointer; font-size:13.5px; transition:transform 0.1s ease, filter 0.15s ease;
-    display:flex; align-items:center; justify-content:center; gap:8px;
+  .result-icon{
+    font-size:40px;
+    margin-bottom:12px;
   }
-  .modal-btn:active{ transform:scale(0.98); }
-  .modal-btn-continue{ background:var(--surface2); border:1px solid var(--border); color:var(--text); }
-  .modal-btn-continue:hover{ background:var(--border); }
-  .modal-btn-restart{ background:linear-gradient(135deg, var(--orange), var(--orange-deep)); color:#fff; box-shadow:0 4px 15px rgba(240, 147, 43, 0.4); }
+  .result-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .result-title.big-alert{
+    font-size:28px;
+    font-weight:900;
+    color:var(--orange);
+    margin-bottom:4px;
+  }
+  .result-desc{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:16px;
+  }
 
-  /* Summary Card */
-  .final-card{
-    background:var(--surface); border:1px solid var(--border); border-radius:12px;
-    padding:14px; text-align:center; margin-top:10px;
+  /* Comment section */
+  .comment-section{
+    text-align:left;
+    margin:16px 0;
+    padding:12px;
+    background:var(--surface2);
+    border-radius:8px;
   }
-  .final-card .big{ font-size:26px; font-weight:800; color:var(--orange); }
-  .reset-link{ background:none; border:none; color:var(--muted-dim); font-size:11px; text-decoration:underline; cursor:pointer; margin-top:10px; width:100%; }
+  .comment-label{
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:6px;
+    display:block;
+  }
+  .comment-textarea{
+    width:100%;
+    background:var(--bg);
+    border:1px solid #3B2450;
+    border-radius:6px;
+    color:var(--text);
+    padding:8px;
+    font-size:12px;
+    font-family:inherit;
+    resize:none;
+    min-height:60px;
+  }
+  .comment-textarea:focus{
+    outline:none;
+    border-color:var(--purple);
+  }
+  .comment-count{
+    font-size:10px;
+    color:var(--muted-dim);
+    margin-top:4px;
+    text-align:right;
+  }
+
+  .result-btn{
+    width:100%;
+    background:none;
+    border:1.5px solid;
+    padding:12px 20px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .2s ease;
+    font-family:inherit;
+  }
+  .result-card.pass .result-btn{
+    color:var(--green);
+    border-color:var(--green);
+  }
+  .result-card.pass .result-btn:hover{
+    background:rgba(76,154,106,0.1);
+  }
+  .result-card.fail .result-btn{
+    color:var(--orange);
+    border-color:var(--orange);
+  }
+  .result-card.fail .result-btn:hover{
+    background:rgba(240,147,43,0.1);
+  }
+
+  /* Deal-Breaker modal */
+  .critical-list{
+    background:rgba(240,147,43,0.1);
+    border-left:3px solid var(--orange);
+    border-radius:8px;
+    padding:12px;
+    margin:16px 0;
+    text-align:left;
+  }
+  .critical-item{
+    margin-bottom:10px;
+    font-size:12px;
+  }
+  .critical-item:last-child{
+    margin-bottom:0;
+  }
+  .critical-text{
+    color:var(--orange);
+    font-weight:700;
+    margin-bottom:2px;
+  }
+  .critical-section{
+    color:var(--muted-dim);
+    font-size:11px;
+  }
+
+  .modal-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .modal-btn-continue{
+    color:var(--purple);
+    border-color:var(--purple);
+  }
+  .modal-btn-continue:hover{
+    background:rgba(154,63,224,0.1);
+  }
+  .modal-btn-restart{
+    color:var(--orange);
+    border-color:var(--orange);
+    background:rgba(240,147,43,0.1);
+  }
+  .modal-btn-restart:hover{
+    background:rgba(240,147,43,0.2);
+  }
+
+  @keyframes slideUp{
+    from{
+      transform:translateY(20px);
+      opacity:0;
+    }
+    to{
+      transform:translateY(0);
+      opacity:1;
+    }
+  }
+
+  .footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted-dim);
+    padding:32px 0;
+  }
+  .footer button{
+    background:none;
+    border:1px solid var(--muted-dim);
+    color:var(--muted-dim);
+    padding:6px 12px;
+    border-radius:6px;
+    font-size:11px;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .footer button:hover{
+    border-color:var(--muted);
+    color:var(--muted);
+  }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-header">
-    <div class="eyebrow">Cort KX507MS Checklist</div>
-    <button class="mode-toggle-btn" id="modeToggleBtn">📋 ดูทุกข้อ (List)</button>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-count" id="progressCount">0/0</div>
-  </div>
-  <div class="save-status" id="saveStatus"><span class="dot"></span><span id="saveStatusText">พร้อมบันทึก</span></div>
-</div>
-
 <div class="container">
 
-  <div class="inspector-card">
-    <label for="inspectorName">ผู้ตรวจ</label>
-    <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจ...">
+  <!-- Top bar -->
+  <div class="topbar">
+    <h1>Checklist ตรวจรับกีตาร์</h1>
+    <div class="subtitle">Cort KX507MS Pale Moon · 7-String Multiscale</div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-count" id="progressCount">0/0</div>
+    </div>
+    <div class="inspector-input">
+      <label for="inspectorName">ผู้ตรวจ:</label>
+      <input type="text" id="inspectorName" placeholder="ชื่อ...">
+    </div>
   </div>
 
-  <!-- TINDER CARD DECK VIEW -->
-  <div id="deckView" class="view-mode active">
-    <div class="deck-container">
-      <div class="card-stack" id="cardStack">
-        <!-- Cards injected dynamically via JS -->
+  <div style="margin-top: 16px;">
+    <div id="sectionBadge" class="section-badge"></div>
+
+    <!-- Swipe card -->
+    <div class="swipe-wrapper" id="swipeWrapper">
+      <div class="left-indicator">✓</div>
+      <div class="right-indicator">✗</div>
+      
+      <div class="swipe-card" id="swipeCard">
+        <div class="item-section" id="itemSection"></div>
+        <div class="item-number" id="itemNumber"></div>
+        <div class="item-text" id="itemText"></div>
+        <ul class="item-bullets" id="itemBullets"></ul>
+        <div class="item-hint" id="itemHint"></div>
       </div>
     </div>
 
-    <!-- ACTION BUTTONS -->
-    <div class="action-bar">
-      <button class="btn-action btn-undo" id="btnUndo" title="ย้อนกลับ">↺</button>
-      <button class="btn-action btn-fail" id="btnFail" title="ไม่ผ่าน (ปัดขวา)">✗</button>
-      <button class="btn-action btn-comment-toggle" id="btnComment" title="ใส่คอมเมนต์">💬</button>
-      <button class="btn-action btn-pass" id="btnPass" title="ผ่าน (ปัดซ้าย)">✓</button>
-    </div>
-  </div>
-
-  <!-- LIST OVERVIEW VIEW -->
-  <div id="listView" class="view-mode">
-    <div class="list-container" id="listContainer">
-      <!-- List sections injected dynamically -->
-    </div>
-  </div>
-
-  <div class="final-card">
-    <div class="big" id="finalScore">0%</div>
-    <div style="font-size:12px; color:var(--muted);" id="finalVerdict">เริ่มตรวจจากข้อแรก...</div>
-  </div>
-
-  <button class="reset-link" id="resetBtn" type="button">ล้างข้อมูลทั้งหมดแล้วเริ่มใหม่</button>
-
-</div>
-
-<!-- DEAL BREAKER POPUP MODAL -->
-<div class="modal-overlay" id="dealBreakerModal">
-  <div class="modal-content">
-    <div class="modal-alert-badge">⚠️ พบปัญหาร้ายแรง (Deal-Breaker)</div>
-    <div class="modal-title-big">แจ้งทีมงาน</div>
-    
-    <div class="failed-item-box">
-      <div class="failed-item-label">หัวข้อที่ไม่ผ่านการตรวจ:</div>
-      <div class="failed-item-title" id="dealBreakerText">-</div>
+    <!-- Result modal -->
+    <div class="modal-overlay" id="resultModal">
+      <div class="result-card" id="resultCard">
+        <div class="result-icon" id="resultIcon">✓</div>
+        <div class="result-title" id="resultTitle">ผ่าน!</div>
+        <div class="result-desc" id="resultDesc">ข้อนี้ตรวจผ่าน</div>
+        
+        <div class="comment-section" id="commentSection" style="display:none;">
+          <label class="comment-label">เพิ่มคอมเมนต์ (ถ้าจำเป็น):</label>
+          <textarea class="comment-textarea" id="commentTextarea" placeholder="เช่น: buzz เล็กน้อยที่เฟรต 12 สาย 7"></textarea>
+          <div class="comment-count"><span id="commentLen">0</span>/200</div>
+        </div>
+        
+        <button class="result-btn modal-next" id="nextBtn">ข้อถัดไป</button>
+      </div>
     </div>
 
-    <div class="modal-actions">
-      <button class="modal-btn modal-btn-continue" id="btnContinue">1. ดำเนินการต่อ</button>
-      <button class="modal-btn modal-btn-restart" id="btnRestart">2. เปลี่ยนตัวและเริ่มตรวจตัวใหม่</button>
+    <!-- Sub-checklist selection modal (for critical cards) -->
+    <div class="modal-overlay" id="subCheckModal">
+      <div class="result-card fail" style="max-width: 360px;">
+        <div class="result-icon">🔍</div>
+        <div class="result-title" style="color: var(--orange); font-size: 18px;">พบปัญหาข้อไหนบ้าง?</div>
+        <div class="result-desc">เลือกจุดที่พบปัญหา (เลือกได้หลายข้อ)</div>
+        <div class="sub-check-list" id="subCheckList"></div>
+        <button class="result-btn modal-btn-restart" id="subCheckConfirmBtn">ยืนยัน</button>
+      </div>
     </div>
+
+    <!-- Deal-Breaker modal -->
+    <div class="modal-overlay" id="dealBreakerModal">
+      <div class="result-card fail" style="max-width: 360px;">
+        <div class="result-icon">⚠️</div>
+        <div class="result-title big-alert">แจ้งทีมงาน</div>
+        <div class="result-desc">
+          <b style="color: var(--text);">พบปัญหาที่ไม่ผ่านการตรวจ:</b>
+        </div>
+        <div id="criticalList" class="critical-list"></div>
+        <div class="modal-buttons">
+          <button class="result-btn modal-btn-continue" id="continueBtn">1. ดำเนินการต่อ</button>
+          <button class="result-btn modal-btn-restart" id="restartBtn">2. เปลี่ยนตัวและเริ่มตรวจตัวใหม่</button>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p id="completionStatus"></p>
+    <button id="resetAllBtn" style="margin-top:16px;">ล้างข้อมูลทั้งหมด</button>
+  </div>
+
 </div>
 
 <script>
+const STORAGE_KEY = 'kx507ms-checklist-v3';
+
 const DATA = [
   {
+    section: "จุดตรวจร้ายแรง",
     critical: true,
-    title: "จุดตรวจร้ายแรง (Deal-Breaker)",
-    howto: "ตรวจหมวดนี้ก่อนเป็นอันดับแรกเสมอ ถ้าเจอปัญหาข้อใดข้อหนึ่ง ให้ขอเปลี่ยนตัวทันที",
     items: [
-      "คอบิดชัดเจน (Neck Twist)",
-      "คอมีรอยแตกตามแนวไม้",
-      "Headstock แตก โดยเฉพาะบริเวณหลัง Nut",
-      "Body แตก",
-      "เฟรตยกหลายตัว",
-      "Fretwork ผิดหนัก (ระดับเฟรตสูง-ต่ำไม่เท่ากันชัดเจน)",
-      "Dead Note หลายตำแหน่งบนคอ",
-      "Nut แตก หรือร่อง Nut เสียหนัก",
-      "Bridge เสียหรือผิดรูป",
-      "Pickup selector เสีย (สลับตำแหน่งแล้วเสียงไม่เปลี่ยน/หาย)",
-      "Push-Pull เสีย (ดึงแล้วเสียงไม่เปลี่ยนจริง)",
-      "Electronics มีปัญหาหลายจุด (Crackle รุนแรง/เสียงหายบ่อย)",
-      "Truss rod มีปัญหา ช่างปรับไม่ได้",
-      "Intonation ผิดหนัก ปรับ Saddle จนสุดแล้วยังเพี้ยน",
-      "ของใหม่มีรอยกระแทกหนักที่ไม่ได้แจ้งล่วงหน้า",
-      "รู้สึกว่า Multiscale ไม่เข้ามือเลย (เป็นเรื่อง Ergonomics ไม่ใช่ Setup)"
+      { num: 1, text: "มองไล่คอ + ตัว + เฮดสต็อกด้วยสายตา",
+        bullets: ["ไม่มี Neck Twist", "ไม่มีรอยแตกที่คอ/ตัว/เฮดสต็อก (โดยเฉพาะหลัง Nut)", "รอยต่อคอ (Neck joint) ไม่มีรอยแตก/ช่องว่าง"],
+        hint: "💡 ยกส่องไฟ มองไล่คอกจาก Headstock → Bridge",
+        subItems: ["Neck Twist", "รอยแตกที่คอ/ตัว/เฮดสต็อก", "Neck joint มีปัญหา"] },
+      { num: 2, text: "ลากนิ้วเช็คเฟรตทั้งคอ",
+        bullets: ["เฟรตทุกตัวนั่งสนิท ไม่ยก ไม่โยก", "Fretwork เรียบสม่ำเสมอ", "Fret end ไม่คมบาดนิ้ว"],
+        hint: "💡 ลากนิ้วเบา ๆ ไล่ขอบ Fingerboard ทั้งคอ",
+        subItems: ["เฟรตยกหลายตัว", "Fretwork ผิดหนัก", "Fret end คมมาก"] },
+      { num: 3, text: "เล่นไล่ทั้งคอเช็ค Dead Note",
+        bullets: ["ทุกโน้ตออกเสียงครบ ไม่มีเสียงหาย", "Sustain สม่ำเสมอทั้งคอ"],
+        hint: "💡 ไล่เฟรต 1, 3, 5, 7, 10, 12, 15, 20, 24 ทุกสาย",
+        subItems: ["Dead Note หลายจุด", "Sustain หายมาก"] },
+      { num: 4, text: "เช็ค Nut",
+        bullets: ["ไม่มีรอยแตกที่ Nut", "ร่อง Nut สภาพดี ไม่ลึกผิดปกติ"],
+        hint: "💡 ดีดสายเปล่า ฟังเสียงแตกหรือติด",
+        subItems: ["Nut แตก", "ร่อง Nut เสียหนัก"] },
+      { num: 5, text: "เช็คบริดจ์ + ไฟฟ้า + Truss Rod",
+        bullets: ["บริดจ์ไม่ผิดรูป ไม่โยก", "สวิตช์/Push-Pull ทำงานปกติ", "Truss rod ปรับได้"],
+        hint: "💡 ดีดแรง เช็คเสียง สลับสวิตช์ ลองให้ช่างสาธิต Truss rod",
+        subItems: ["Bridge เสีย/ผิดรูป", "Pickup selector เสีย", "Push-Pull เสีย", "Electronics มีปัญหาหลายจุด", "Truss rod ปรับไม่ได้"] },
+      { num: 6, text: "เช็ค Intonation หนัก + ของใหม่ + Multiscale feel",
+        bullets: ["Intonation ปรับ Saddle ได้ปกติ", "ของใหม่ไม่มีรอยกระแทกที่ไม่แจ้ง", "Multiscale จับต้องแล้วเข้ามือ"],
+        hint: "💡 เทียบ Tuner คร่าว ๆ + สังเกตสภาพตัว + ลองจับเล่น",
+        subItems: ["Intonation ผิดหนักปรับไม่พอ", "รอยกระแทกหนักของใหม่ไม่แจ้ง", "Multiscale ไม่เข้ามือเลย"] },
     ]
   },
   {
-    title: "ตรวจคอกีตาร์ด้วยตา (Neck)",
-    howto: "ตั้งกีตาร์ขึ้น หลับตาข้างหนึ่ง มองไล่แนวคอกจาก Headstock ไปยัง Bridge",
+    section: "ทดเล่นเสียงโดยรวม",
+    critical: false,
     items: [
-      "คอดูตรงหรือโค้งอย่างสม่ำเสมอตลอดแนว",
-      "ไม่มี Neck Twist แม้เพียงเล็กน้อย",
-      "ไม่มีจุดหักหรือคอดผิดธรรมชาติ",
-      "ไม่มีรอยแตกตามแนวคอ",
-      "ขอบ Fingerboard ซ้าย-ขวาไม่บิดเบี้ยวผิดธรรมชาติ"
+      { num: 7, text: "ทดเล่นทุกสายไล่คอ (Buzz/Sustain)",
+        bullets: ["ไม่มี Buzz รุนแรง", "Sustain ทั่วคอสม่ำเสมอ", "Bend สายแล้วเสียงไม่ดับ"],
+        hint: "💡 ไล่เล่นรอบเดียวฟังพร้อมกันทุกจุด" },
     ]
   },
   {
-    title: "ตรวจเฟรต (24 ตัว Stainless Steel)",
-    howto: "ใช้นิ้วลากเบา ๆ ไล่ขอบ Fingerboard ทั้งสองฝั่ง มองไล่หน้าเฟรตทั้งคอ",
+    section: "สาย 7 (Low B)",
+    critical: false,
     items: [
-      "ไม่มี Fret end คมจนบาดนิ้ว",
-      "ไม่มีจุดที่แทงนิ้วเวลาไล้ผ่าน",
-      "เฟรตทุกตัวนั่งสนิทกับร่องเฟรต",
-      "ไม่มีเฟรตยกขึ้นจากไม้",
-      "ไม่มีเฟรตโยกเมื่อกดนิ้ว",
-      "ไม่มีรอยกระแทกหนักบนเฟรต",
-      "ไม่มีร่องหรือรอยลึกผิดปกติบนหน้าเฟรต",
-      "ไม่มีจุดที่เฟรตสูง/ต่ำผิดปกติเมื่อมองไล่แนว"
+      { num: 8, text: "ทดสอบสาย 7 (Low B) — จุดขายหลัก",
+        bullets: ["เสียง Tight ไม่บวมมัว", "Palm mute มี Attack ชัด", "Sustain ดี ไม่ดับเร็ว"],
+        hint: "💡 ใช้ปิ๊กอัพ Bridge ลอง Palm mute, Chug, Power chord" },
     ]
   },
   {
-    title: "ทดสอบทุกสาย / Dead Note / Sustain",
-    howto: "ไล่เล่น Open→1→2→...→24 ทีละสายจากสาย 7 ไปสาย 1",
+    section: "ระบบไฟฟ้า",
+    critical: false,
     items: [
-      "ทุกโน้ตออกเสียงครบ ไม่มีเสียงหาย",
-      "ไม่มี Dead Note",
-      "ไม่มีเสียงดับผิดปกติระหว่างโน้ต",
-      "Sustain สม่ำเสมอทั้งคอ",
-      "Buzz ไม่รุนแรง",
-      "Bend สายแล้วเสียงไม่ดับ"
+      { num: 9, text: "สวิตช์ 3 ทาง (Bridge/Middle/Neck)",
+        bullets: ["ทุกตำแหน่งมีเสียง", "ไม่มีเสียงหายระหว่างสลับ"],
+        hint: "💡 ใช้เสียง Clean สลับไล่ทีละตำแหน่ง" },
+      { num: 10, text: "Volume / Tone",
+        bullets: ["หมุนแล้วเสียงเปลี่ยนสม่ำเสมอ", "ไม่มี Crackle หรือ Dead spot"],
+        hint: "💡 หมุนไล่ 0→50→100 ทั้งสองปุ่ม" },
+      { num: 11, text: "Push-Pull (Voice + Coil-split)",
+        bullets: ["Volume Push-Pull เปลี่ยน Voice จริง", "Tone Push-Pull สลับ Humbucker/Coil-split จริง"],
+        hint: "💡 ลองทั้ง Push และ Pull ทั้งสองปุ่ม" },
     ]
   },
   {
-    title: "ทดสอบสาย 7 (Low B) — จุดขายหลัก",
-    howto: "ใช้ปิ๊กอัพ Bridge ทดสอบ Palm mute, Chug, Power chord กับสาย 7",
+    section: "Intonation",
+    critical: false,
     items: [
-      "Low B ให้เสียง Tight ไม่บวมมัว",
-      "ไม่มีอาการ Mud (เสียงจมเบลอ)",
-      "Palm mute สาย 7 ยังมี Attack ชัด",
-      "คอร์ดที่ใช้สาย 7 ยังแยกโน้ตได้",
-      "Sustain สาย 7 ดี ไม่ดับเร็วผิดปกติ"
+      { num: 12, text: "วัด Intonation ด้วย Tuner",
+        bullets: ["สายเปล่าตรง", "Harmonic เฟรต 12 ตรง", "โน้ตกดจริงเฟรต 12 ใกล้เคียง Harmonic"],
+        hint: "💡 เทียบสาย 7, 6, 1 เป็นหลัก" },
     ]
   },
   {
-    title: "ตรวจ Electronics / Fishman Fluence Modern",
-    howto: "ทดสอบสวิตช์ 3 ทาง, Volume/Tone (0→100) และ Push-Pull",
+    section: "Multiscale Ergonomics",
+    critical: false,
     items: [
-      "ตำแหน่ง Bridge มีเสียง",
-      "ตำแหน่ง Middle มีเสียง",
-      "ตำแหน่ง Neck มีเสียง",
-      "ไม่มีเสียงหายระหว่างสลับตำแหน่ง",
-      "ไม่มี Crackle รุนแรง",
-      "Volume: เสียงเปลี่ยนสม่ำเสมอ ไม่มี Dead spot",
-      "Tone: เสียงเปลี่ยนสม่ำเสมอ ไม่มีจุดผิดปกติ",
-      "Volume Push-Pull: Push=Voice 1, Pull=Voice 2 เปลี่ยนจริง",
-      "Tone Push-Pull: Push=Humbucker, Pull=Coil-split เปลี่ยนจริง",
-      "ไม่มีเสียงหายตอนสลับ Push-Pull",
-      "ไม่มี Crackle ตอนสลับ Push-Pull",
-      "ช่องแบตเตอรี่และ Connector แน่น ไม่มีสนิม",
-      "ถามร้าน: แบตใหม่ไหม เป็นตัว Display หรือของใหม่จากกล่อง"
+      { num: 13, text: "Multiscale — Low Position (เฟรต 1–5)",
+        bullets: ["เล่นสบาย ไม่ต้องเอี้ยวมือมาก", "Power chord ไม่เกร็งข้อมือ"],
+        hint: "💡 ลอง Power chord และ String skipping" },
+      { num: 14, text: "Multiscale — Middle Position (เฟรต 7–12)",
+        bullets: ["เล่นเป็นธรรมชาติรอบ Neutral Fret", "เปลี่ยนตำแหน่งคอร์ดง่าย"],
+        hint: "💡 Neutral Fret อยู่ที่เฟรต 8" },
+      { num: 15, text: "Multiscale — High Position (เฟรต 15–24)",
+        bullets: ["โซโล่/Alternate picking สบาย", "Bend ไม่ติดขัดจากมุมเอียงเฟรต"],
+        hint: "💡 ลองโซโล่และ Bend สายบน" },
     ]
   },
   {
-    title: "ตรวจ Intonation",
-    howto: "เทียบสายเปล่า / Harmonic เฟรต 12 / กดจริงเฟรต 12",
+    section: "Body / Finish",
+    critical: false,
     items: [
-      "สายเปล่าตรง",
-      "Harmonic เฟรต 12 ตรง",
-      "โน้ตกดจริงเฟรต 12 ใกล้เคียงกับ Harmonic"
+      { num: 16, text: "ตรวจ Body / Finish รอบตัว",
+        bullets: ["ไม่มีรอยบุบ/แตก/กระแทก", "Finish ไม่ยกหรือพอง", "ลาย Pale Moon ยอมรับได้"],
+        hint: "💡 ส่องไฟ หมุนดูรอบตัวทีละด้าน" },
     ]
   },
   {
-    title: "ตรวจความรู้สึก Multiscale (Ergonomics)",
-    howto: "ทดลองเล่นสาย 7 เฟรต 5 → สาย 6 เฟรต 5 ต่อเนื่อง Power chord / Scale",
+    section: "สเปกและรุ่น",
+    critical: false,
     items: [
-      "Low Position (เฟรต 1–5): เล่นสบาย ไม่ต้องเอี้ยวมือมาก",
-      "Low Position: Power chord ไม่เกร็งข้อมือ",
-      "Middle Position (เฟรต 7–12): เล่นเป็นธรรมชาติ",
-      "Middle Position: เปลี่ยนตำแหน่งคอร์ดง่าย",
-      "High Position (เฟรต 15–24): โซโล่/Alternate picking สบาย",
-      "High Position: Bend สายไม่ติดขัดจากมุมเอียงของเฟรต",
-      "String skipping ทำได้คล่องทุกตำแหน่ง",
-      "Octave/Scale เล่นข้ามตำแหน่งได้ลื่น"
+      { num: 17, text: "เทียบสเปก/รุ่นให้ตรง",
+        bullets: ["Cort KX507MS Pale Moon, 7 สาย Multiscale 25.5–27\"", "Fishman Fluence Modern HH, เฟรต Stainless 24 ตัว", "Nut PPS 52.3mm, Locking Tuners, String-thru Bridge"],
+        hint: "💡 เทียบป้ายสเปกที่ตัวกีตาร์/กล่องทีละบรรทัด" },
     ]
   },
   {
-    title: "ตรวจ Body / Finish / Pale Moon Top",
-    meta: "12 ข้อ",
-    howto: "ยกกีตาร์ส่องกับแสงไฟ หมุนดูรอบตัวทีละด้าน",
+    section: "Nut โดยละเอียด",
+    critical: false,
     items: [
-      "ด้านหน้าไม่มีรอยบุบ",
-      "ด้านหลังไม่มีรอยบุบ",
-      "ขอบ body ไม่มีรอยกระแทก",
-      "ไม่มี finish ยกหรือพองเป็นฟองอากาศ",
-      "ไม่มีคราบกาวผิดปกติตามรอยต่อ",
-      "รอยต่อคอ (Neck joint) ไม่มีรอยแตก",
-      "ลายไม้ Pale Moon สวยและยอมรับได้",
-      "ไม่มีรอยแตกบนหน้าไม้ Top",
-      "ไม่มีรอย Dent (บุบ) บน Top",
-      "ไม่มีคราบกาวรั่วซึมจาก Top",
-      "ไม่มีรอยซ่อมที่ไม่ได้แจ้งล่วงหน้า",
-      "ไม่มีช่องว่างระหว่างชิ้นส่วนที่ผิดปกติ"
+      { num: 18, text: "Nut โดยละเอียด",
+        bullets: ["สายเปล่าทุกสายดังชัด ไม่ติดร่อง Nut", "กดเฟรต 1 ได้ปกติ ไม่ต้องออกแรงมาก"],
+        hint: "💡 ดีดสายเปล่าไล่ 7→1 แล้วกดเฟรต 1 ทุกสาย" },
     ]
   },
   {
-    title: "ตรวจรุ่นและสเปกให้ตรง",
-    howto: "เทียบป้ายสเปกที่ตัวกีตาร์/กล่อง กับรายการทีละบรรทัด",
+    section: "Bridge / Saddle",
+    critical: false,
     items: [
-      "รุ่น: Cort KX507MS / Finish: Pale Moon",
-      "7 สาย, Multiscale 25.5–27 นิ้ว",
-      "Fishman Fluence Modern Humbucker Set (HH)",
-      "เฟรต 24 ตัว วัสดุ Stainless Steel (Jumbo)",
-      "Fingerboard: Macassar Ebony รัศมี 16 นิ้ว",
-      "Nut: Black PPS กว้าง 52.3 มม.",
-      "Locking Tuners ยี่ห้อ Cort",
-      "บริดจ์แบบ Individual String-through-body",
-      "อุปกรณ์ครบ: ใบรับประกัน ใบเสร็จ กล่อง/กระเป๋า"
+      { num: 19, text: "Bridge / Saddle",
+        bullets: ["Saddle ไม่โยกคลอน ไม่มีสนิม", "แนวสายตรง ไม่เยื้องรูขันสาย", "ไม่มีเสียงโลหะสั่นผิดปกติ"],
+        hint: "💡 ดีดสาย 7 แรง ๆ ฟังเสียงจากบริดจ์" },
     ]
   },
   {
-    title: "ตรวจ Nut โดยละเอียด",
-    howto: "ดีดสายเปล่าไล่จากสาย 7→1 แล้วกดทุกสายที่เฟรต 1",
+    section: "Locking Tuners",
+    critical: false,
     items: [
-      "สายเปล่าทุกสายดังชัดเจน",
-      "ไม่มีเสียงแตกหรือสั่นผิดปกติที่ร่อง Nut",
-      "ไม่มีสายติดร่อง Nut",
-      "กดสายทุกสายที่เฟรต 1 ได้ปกติ",
-      "ไม่มีเสียงเพี้ยนผิดปกติที่เฟรต 1",
-      "ไม่ต้องออกแรงกดมากเกินไปที่เฟรต 1"
+      { num: 20, text: "Locking Tuners",
+        bullets: ["หมุนลื่น ไม่ฝืด ไม่มีเสียงกึกกัก", "Tuning นิ่งหลังเล่นแรง"],
+        hint: "💡 หมุนทีละตัวครบ 7 ตัว แล้วเล่นแรงเช็คความนิ่ง" },
     ]
   },
   {
-    title: "ตรวจ Bridge / Saddle",
-    howto: "ดีดสาย 7 แรง ๆ แล้วฟังเสียงจากบริดจ์",
+    section: "ทดสอบ Tuning จริง",
+    critical: false,
     items: [
-      "Saddle ทุกตัวอยู่ในสภาพปกติ",
-      "ไม่มีชิ้นส่วนโยกคลอน",
-      "ไม่มีสกรูหลวมผิดปกติ",
-      "ไม่มีสนิม",
-      "แนวสายตรงปกติ ไม่เยื้องรูขันสาย",
-      "ไม่มีเสียงโลหะสั่นผิดปกติ",
-      "ไม่มีเสียง 'กริ๊ง/แกร๊ก' จากบริดจ์เวลาดีดแรง",
-      "ไม่มีเสียงโลหะสั่นค้าง"
+      { num: 21, text: "ทดสอบ Tuning ที่จะใช้เล่นจริง",
+        bullets: ["ตั้ง Tuning จริง (เช่น Drop A) แล้วเล่นริฟฟ์ทดสอบ", "ตรวจสาย 7 และ Intonation ซ้ำใน Tuning นี้"],
+        hint: "💡 อย่าทดสอบแค่ Standard Tuning เท่านั้น" },
     ]
   },
   {
-    title: "ตรวจ Locking Tuners",
-    howto: "หมุน Tuner ทีละตัวให้ครบ 7 ตัว แล้วตั้งสายเล่นแรง ๆ",
+    section: "Ergonomics / น้ำหนัก",
+    critical: false,
     items: [
-      "หมุนลื่น ไม่ฝืด",
-      "ไม่มีจุดฝืดหนักผิดปกติ",
-      "ไม่มีเสียงกึกกักผิดปกติ",
-      "ไม่มีแกน Tuner โยก",
-      "Knob ล็อกสายไม่โยกมาก",
-      "Tuning กลับมาค่อนข้างคงที่หลังเล่นแรง",
-      "ไม่มีสายคลายตัวผิดปกติ"
+      { num: 22, text: "สมดุลตอนสะพาย + น้ำหนัก",
+        bullets: ["ไม่มี Neck dive", "น้ำหนักรวมรับได้ ไม่เมื่อยไหล่"],
+        hint: "💡 สะพายสายสะพายจริง ยืนเล่นต่อเนื่อง 5–10 นาที" },
     ]
   },
   {
-    title: "ทดสอบ Tuning ที่จะใช้เล่นจริง",
-    howto: "ตั้ง Tuning จริงที่จะใช้ (เช่น Drop A) แล้วเล่นริฟฟ์ทดสอบ",
+    section: "แบตเตอรี่ + สถานะสินค้า",
+    critical: false,
     items: [
-      "ตั้ง Tuning จริงที่จะใช้ แล้วเล่นริฟฟ์ทดสอบ",
-      "ตรวจสาย 7 ซ้ำใน Tuning นี้",
-      "ตรวจ Intonation ซ้ำใน Tuning นี้",
-      "ตรวจความตึงของสายว่าหย่อนเกินไปหรือไม่",
-      "ถ้าจะเล่น Drop G#/G/F# ควรทดสอบจริงก่อนซื้อ"
+      { num: 23, text: "แบตเตอรี่ + สถานะสินค้า",
+        bullets: ["ช่องแบตสภาพดี ไม่มีสนิม", "เป็นของใหม่ 100% ไม่ใช่ B-stock/ตัวเคลม/ตัว Display"],
+        hint: "💡 ถามพนักงานให้ชัดเจนก่อนตัดสินใจ" },
     ]
   },
   {
-    title: "ตรวจ Truss Rod (ห้ามหมุนเอง)",
-    howto: "ให้ช่างร้านเป็นผู้ตรวจและสาธิตให้ดู ห้ามหมุนเองเด็ดขาด",
+    section: "ก่อนจ่ายเงิน",
+    critical: false,
     items: [
-      "Truss rod nut ไม่เสียหาย",
-      "ไม่มีรอยไขควงหมุนหนักผิดปกติ",
-      "ช่างสามารถปรับได้จริงเมื่อสาธิต",
-      "Neck relief ปรับได้ตามปกติ"
-    ]
-  },
-  {
-    title: "ตรวจ Neck Joint",
-    howto: "ดูจุดต่อระหว่างคอกับตัวกีตาร์ให้ละเอียด",
-    items: [
-      "ไม่มีรอยแตก (Crack)",
-      "ไม่มีช่องว่าง (Gap) ใหญ่ผิดปกติ",
-      "ไม่มีรอยแยก",
-      "คอไม่เอียงผิดธรรมชาติจากจุดต่อ"
-    ]
-  },
-  {
-    title: "ตรวจ Headstock",
-    howto: "ดูให้ละเอียดโดยเฉพาะจุดหลัง Nut ซึ่งเป็นจุดที่หักง่ายที่สุด",
-    items: [
-      "ไม่มีรอยแตกโดยเฉพาะบริเวณหลัง Nut",
-      "โลโก้ Cort ปกติ ไม่เพี้ยน",
-      "Tuner ทุกตัวยึดแน่นกับ Headstock",
-      "ไม่มีรอยกระแทก"
-    ]
-  },
-  {
-    title: "ตรวจสมดุลตอนสะพาย (Ergonomics/น้ำหนัก)",
-    howto: "สะพายสายสะพายจริง ยืนเล่นต่อเนื่อง 5–10 นาที ตรวจ Neck dive",
-    items: [
-      "คอไม่ตกลง (ไม่มี Neck dive)",
-      "Headstock ไม่หนักเกินไป",
-      "Body ไม่กดตัวเวลานั่ง/ยืน",
-      "มือซ้ายไม่ต้องคอยพยุงคอ",
-      "เล่นเฟรตสูงได้สะดวก",
-      "น้ำหนักโดยรวมรับได้ ไม่เมื่อยไหล่",
-      "ไม่ทำให้คอกีตาร์พุ่งลงเพราะน้ำหนักไม่สมดุล"
-    ]
-  },
-  {
-    title: "ตรวจสถานะสินค้า",
-    howto: "ถามพนักงานให้ชัดเจนก่อนตัดสินใจ",
-    items: [
-      "เป็นของใหม่ 100%",
-      "ไม่ใช่ B-stock",
-      "ไม่ใช่ตัวเคลมประกัน",
-      "ไม่ใช่ตัวที่เคยซ่อม",
-      "ไม่ใช่ตัว Display ที่ผ่านการใช้งานหนัก"
-    ]
-  },
-  {
-    title: "ก่อนจ่ายเงิน — ให้ร้าน Setup แล้วตรวจซ้ำ",
-    howto: "ถ้าพบปัญหาระดับ Setup ให้ร้านแก้ทุกข้อนี้ก่อนเซ็นรับ",
-    items: [
-      "Neck relief ปรับแล้ว",
-      "Action ปรับแล้ว",
-      "Intonation ปรับแล้ว",
-      "Pickup height ปรับแล้ว",
-      "Fret buzz แก้แล้ว",
-      "Nut ปรับแล้ว (ถ้าจำเป็น)",
-      "Tuning stability ตรวจแล้ว",
-      "Electronics ตรวจซ้ำแล้ว ไม่มี Crackle"
+      { num: 24, text: "ก่อนจ่ายเงิน — Setup Summary",
+        bullets: ["Neck relief / Action / Intonation ปรับแล้ว", "Pickup height / Fret buzz / Nut ปรับแล้ว", "Tuning stability และ Electronics ตรวจซ้ำแล้ว"],
+        hint: "💡 ให้ร้าน Setup แก้จุดที่เป็น ⚠️ แล้วตรวจซ้ำก่อนเซ็นรับ" },
     ]
   }
 ];
 
-// Flatten DATA into a linear queue
-let ALL_ITEMS = [];
-DATA.forEach((sec, sIdx) => {
-  sec.items.forEach((itemText, iIdx) => {
-    ALL_ITEMS.push({
-      key: `s${sIdx}-i${iIdx}`,
-      secIdx: sIdx,
-      itemIdx: iIdx,
-      secTitle: sec.title,
-      critical: sec.critical || false,
-      howto: sec.howto,
-      text: itemText
+let state = {
+  inspectorName: '',
+  items: {},
+  currentItem: 0,
+  totalItems: 0,
+  failedCritical: []
+};
+
+let allSections = [];
+let currentSectionIdx = 0;
+let currentItemInSectionIdx = 0;
+
+function initData() {
+  allSections = [];
+  let itemCount = 0;
+  
+  DATA.forEach((sec, sIdx) => {
+    allSections.push({
+      section: sec.section,
+      critical: sec.critical,
+      items: sec.items.map((item, iIdx) => {
+        itemCount++;
+        const key = `${sIdx}-${iIdx}`;
+        return { ...item, key, section: sec.section, critical: sec.critical };
+      })
     });
   });
-});
-
-const STORAGE_KEY = 'kx507ms-checklist-tinder-state';
-let state = { inspectorName: '', items: {}, currIndex: 0, history: [] };
-
-function loadState(){
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      state = Object.assign(state, JSON.parse(raw));
-    }
-  } catch(e) {}
-}
-
-function saveState(){
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    document.getElementById('saveStatus').classList.add('saved');
-  } catch(e) {}
-}
-
-// Global UI State
-let currentIndex = 0;
-let isListView = false;
-
-function init(){
-  loadState();
-  currentIndex = state.currIndex || 0;
   
-  document.getElementById('inspectorName').value = state.inspectorName || '';
-  document.getElementById('inspectorName').addEventListener('input', (e) => {
-    state.inspectorName = e.target.value;
-    saveState();
-  });
-
-  renderDeck();
-  renderList();
-  updateProgress();
-
-  // Control Buttons
-  document.getElementById('btnPass').addEventListener('click', () => swipeCard('left'));
-  document.getElementById('btnFail').addEventListener('click', () => swipeCard('right'));
-  document.getElementById('btnUndo').addEventListener('click', undoSwipe);
-  document.getElementById('btnComment').addEventListener('click', toggleCommentFocus);
-
-  // View Mode Toggle
-  document.getElementById('modeToggleBtn').addEventListener('click', () => {
-    isListView = !isListView;
-    document.getElementById('deckView').classList.toggle('active', !isListView);
-    document.getElementById('listView').classList.toggle('active', isListView);
-    document.getElementById('modeToggleBtn').textContent = isListView ? "🃏 โหมด Tinder Card" : "📋 ดูทุกข้อ (List)";
-  });
-
-  // Modal Actions
-  document.getElementById('btnContinue').addEventListener('click', () => {
-    document.getElementById('dealBreakerModal').classList.remove('open');
-  });
-
-  document.getElementById('btnRestart').addEventListener('click', () => {
-    if(confirm('ยืนยันล้างข้อมูลและเริ่มตรวจตัวใหม่ตั้งแต่ข้อแรก?')){
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  });
-
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    if(confirm('ล้างข้อมูลทั้งหมดแล้วเริ่มตรวจใหม่?')){
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  });
+  state.totalItems = itemCount;
+  loadState();
 }
 
-function renderDeck(){
-  const stack = document.getElementById('cardStack');
-  stack.innerHTML = '';
+function getCurrentItem() {
+  if (currentSectionIdx >= allSections.length) return null;
+  const section = allSections[currentSectionIdx];
+  if (currentItemInSectionIdx >= section.items.length) return null;
+  return section.items[currentItemInSectionIdx];
+}
 
-  if (currentIndex >= ALL_ITEMS.length) {
-    stack.innerHTML = `<div style="text-align:center; padding:40px; color:var(--muted);">🎉 ตรวจครบทุกข้อแล้ว! คุณสามารถดูสรุปผลด้านล่าง หรือสลับไปโหมด List ได้</div>`;
+function nextItem() {
+  currentItemInSectionIdx++;
+  if (currentItemInSectionIdx >= allSections[currentSectionIdx].items.length) {
+    currentSectionIdx++;
+    currentItemInSectionIdx = 0;
+  }
+}
+
+function updateDisplay() {
+  const item = getCurrentItem();
+  if (!item) {
+    document.getElementById('swipeCard').innerHTML = '<div style="text-align:center; padding:40px;"><div style="font-size:20px; color: var(--green); margin-bottom: 16px;">✓ ตรวจครบแล้ว!</div><div style="color: var(--muted);">ขอบคุณที่ใช้ checklist นี้</div></div>';
     return;
   }
 
-  // Render Top 3 Cards for Stack Performance
-  for (let i = 0; i < 3; i++) {
-    const idx = currentIndex + i;
-    if (idx >= ALL_ITEMS.length) break;
-
-    const item = ALL_ITEMS[idx];
-    const card = document.createElement('div');
-    card.className = `tinder-card ${i === 0 ? 'card-top' : i === 1 ? 'card-next' : 'card-next-2'}`;
-    card.dataset.index = idx;
-
-    const savedState = state.items[item.key] || {};
-
-    card.innerHTML = `
-      <div class="stamp stamp-pass">PASS ✓</div>
-      <div class="stamp stamp-fail">FAIL ✗</div>
-      <div>
-        <div class="card-tag ${item.critical ? 'critical' : ''}">
-          ${item.critical ? '🚩' : '📌'} หมวด ${item.secIdx + 1}/${DATA.length} • ${item.secTitle}
-        </div>
-        <div class="card-body">
-          <div class="card-item-title">${item.text}</div>
-          <div class="card-howto">💡 <b>วิธีตรวจ:</b> ${item.howto}</div>
-        </div>
-      </div>
-      <div class="card-comment-wrap">
-        <textarea class="card-comment-input" placeholder="💬 เพิ่มบันทึก/คอมเมนต์ข้อนี้..." data-key="${item.key}">${savedState.comment || ''}</textarea>
-      </div>
-      <div class="card-footer-info">
-        <span>ข้อที่ ${idx + 1} จาก ${ALL_ITEMS.length}</span>
-        <span>👈 ปัดซ้าย: ผ่าน | ปัดขวา: ไม่ผ่าน 👉</span>
-      </div>
-    `;
-
-    // Comment saving
-    const commentInput = card.querySelector('.card-comment-input');
-    commentInput.addEventListener('input', (e) => {
-      state.items[item.key] = state.items[item.key] || {};
-      state.items[item.key].comment = e.target.value;
-      saveState();
-    });
-
-    stack.appendChild(card);
-
-    if (i === 0) attachDragEvents(card, item);
-  }
-}
-
-// Drag / Touch Gesture Engine
-function attachDragEvents(card, item){
-  let startX = 0, startY = 0, currentX = 0, currentY = 0;
-  let isDragging = false;
-  const stampPass = card.querySelector('.stamp-pass');
-  const stampFail = card.querySelector('.stamp-fail');
-
-  function onPointerDown(e){
-    if(e.target.tagName === 'TEXTAREA') return; // let user interact with comment box
-    isDragging = true;
-    startX = e.clientX || (e.touches && e.touches[0].clientX);
-    startY = e.clientY || (e.touches && e.touches[0].clientY);
-    card.style.transition = 'none';
+  const itemData = state.items[item.key];
+  
+  document.getElementById('itemSection').textContent = item.section;
+  document.getElementById('itemNumber').textContent = `ข้อที่ ${item.num}`;
+  document.getElementById('itemText').textContent = item.text;
+  document.getElementById('itemHint').textContent = item.hint;
+  document.getElementById('itemBullets').innerHTML = (item.bullets || []).map(b => `<li>${b}</li>`).join('');
+  
+  const badge = document.getElementById('sectionBadge');
+  if (item.critical) {
+    badge.textContent = '🚩 จุดตรวจร้ายแรง';
+    badge.classList.add('critical');
+  } else {
+    badge.textContent = item.section;
+    badge.classList.remove('critical');
   }
 
-  function onPointerMove(e){
-    if (!isDragging) return;
-    const x = e.clientX || (e.touches && e.touches[0].clientX);
-    const y = e.clientY || (e.touches && e.touches[0].clientY);
-    currentX = x - startX;
-    currentY = y - startY;
-
-    const rotate = currentX * 0.08;
-    card.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) rotate(${rotate}deg)`;
-
-    // Stamp opacity
-    if (currentX < -30) {
-      stampPass.style.opacity = Math.min(1, Math.abs(currentX) / 80);
-      stampFail.style.opacity = 0;
-    } else if (currentX > 30) {
-      stampFail.style.opacity = Math.min(1, Math.abs(currentX) / 80);
-      stampPass.style.opacity = 0;
-    } else {
-      stampPass.style.opacity = 0;
-      stampFail.style.opacity = 0;
-    }
-  }
-
-  function onPointerUp(){
-    if (!isDragging) return;
-    isDragging = false;
-    card.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
-
-    const threshold = 90;
-    if (currentX < -threshold) {
-      swipeCard('left');
-    } else if (currentX > threshold) {
-      swipeCard('right');
-    } else {
-      card.style.transform = `translate3d(0, 0, 0) rotate(0deg)`;
-      stampPass.style.opacity = 0;
-      stampFail.style.opacity = 0;
-    }
-  }
-
-  card.addEventListener('mousedown', onPointerDown);
-  window.addEventListener('mousemove', onPointerMove);
-  window.addEventListener('mouseup', onPointerUp);
-
-  card.addEventListener('touchstart', onPointerDown, {passive: true});
-  window.addEventListener('touchmove', onPointerMove, {passive: true});
-  window.addEventListener('touchend', onPointerUp);
-}
-
-function swipeCard(direction){
-  if (currentIndex >= ALL_ITEMS.length) return;
-
-  const item = ALL_ITEMS[currentIndex];
-  const card = document.querySelector('.tinder-card.card-top');
-  const status = direction === 'left' ? 'pass' : 'fail';
-
-  if (card) {
-    const moveX = direction === 'left' ? -500 : 500;
-    card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-    card.style.transform = `translate3d(${moveX}px, 0, 0) rotate(${direction === 'left' ? -20 : 20}deg)`;
-    card.style.opacity = 0;
-  }
-
-  // Save history for undo
-  state.history.push({ index: currentIndex, itemKey: item.key, prevStatus: state.items[item.key]?.status });
-
-  // Update State
-  state.items[item.key] = state.items[item.key] || {};
-  state.items[item.key].status = status;
-  currentIndex++;
-  state.currIndex = currentIndex;
-  saveState();
-
-  // Show Pop-up if Deal-Breaker Item Fails
-  if (status === 'fail' && item.critical) {
-    document.getElementById('dealBreakerText').textContent = `${item.secTitle}: ${item.text}`;
-    document.getElementById('dealBreakerModal').classList.add('open');
-  }
-
-  setTimeout(() => {
-    renderDeck();
-    renderList();
-    updateProgress();
-  }, 200);
-}
-
-function undoSwipe(){
-  if (state.history.length === 0) return;
-  const last = state.history.pop();
-  currentIndex = last.index;
-  state.currIndex = currentIndex;
-  saveState();
-
-  renderDeck();
-  renderList();
   updateProgress();
 }
 
-function toggleCommentFocus(){
-  const input = document.querySelector('.tinder-card.card-top .card-comment-input');
-  if (input) input.focus();
-}
-
-function renderList(){
-  const container = document.getElementById('listContainer');
-  container.innerHTML = '';
-
-  DATA.forEach((sec, sIdx) => {
-    const secEl = document.createElement('div');
-    secEl.className = `section ${sec.critical ? 'critical' : ''}`;
-
-    let itemsHtml = '';
-    sec.items.forEach((itemText, iIdx) => {
-      const key = `s${sIdx}-i${iIdx}`;
-      const status = state.items[key]?.status;
-      const statusClass = status === 'pass' ? 'status-pass' : status === 'fail' ? 'status-fail' : 'status-none';
-      const statusText = status === 'pass' ? '✓ ผ่าน' : status === 'fail' ? '✗ ไม่ผ่าน' : 'ยังไม่ตรวจ';
-
-      itemsHtml += `
-        <div class="list-item">
-          <span class="list-item-text">${itemText}</span>
-          <span class="list-item-status ${statusClass}">${statusText}</span>
-        </div>
-      `;
-    });
-
-    secEl.innerHTML = `
-      <div class="section-head">
-        <span class="section-title">${sec.critical ? '🚩' : '📌'} ${sec.title}</span>
-        <span style="font-size:12px; color:var(--muted);">▼</span>
-      </div>
-      <div class="section-body">
-        ${itemsHtml}
-      </div>
-    `;
-
-    secEl.querySelector('.section-head').addEventListener('click', () => {
-      secEl.classList.toggle('open');
-      const body = secEl.querySelector('.section-body');
-      body.style.maxHeight = secEl.classList.contains('open') ? body.scrollHeight + 'px' : null;
-    });
-
-    container.appendChild(secEl);
-  });
-}
-
-function updateProgress(){
-  const total = ALL_ITEMS.length;
-  const doneKeys = Object.keys(state.items).filter(k => state.items[k].status);
-  const donePass = doneKeys.filter(k => state.items[k].status === 'pass').length;
-  const doneFail = doneKeys.filter(k => state.items[k].status === 'fail').length;
-
-  const pct = Math.round((doneKeys.length / total) * 100);
+function updateProgress() {
+  let passed = 0;
+  for (let key in state.items) {
+    if (state.items[key].passed === true) passed++;
+  }
+  
+  const pct = Math.round(passed / state.totalItems * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressCount').textContent = `${doneKeys.length}/${total}`;
-  document.getElementById('finalScore').textContent = `${pct}%`;
-
-  const verdict = document.getElementById('finalVerdict');
-  if (doneFail > 0) {
-    verdict.textContent = `⚠️ พบข้อไม่ผ่าน ${doneFail} ข้อ (ผ่านแล้ว ${donePass} ข้อ)`;
-    verdict.style.color = 'var(--orange)';
-  } else if (doneKeys.length === total) {
-    verdict.textContent = '✅ ตรวจครบทุกข้อแล้ว — ผ่านหมด!';
-    verdict.style.color = 'var(--purple)';
+  document.getElementById('progressCount').textContent = `${passed}/${state.totalItems}`;
+  
+  if (passed === state.totalItems) {
+    document.getElementById('completionStatus').innerHTML = '<b style="color: var(--green);">✓ ตรวจครบแล้ว</b>';
   } else {
-    verdict.textContent = `ตรวจแล้ว ${doneKeys.length} จาก ${total} ข้อ`;
-    verdict.style.color = 'var(--muted)';
+    document.getElementById('completionStatus').textContent = `ตรวจแล้ว ${passed}/${state.totalItems} การ์ด`;
   }
 }
 
-init();
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const data = JSON.parse(saved);
+      state.inspectorName = data.inspectorName || '';
+      state.items = data.items || {};
+      state.failedCritical = data.failedCritical || [];
+    }
+  } catch (e) {}
+  
+  document.getElementById('inspectorName').value = state.inspectorName;
+  updateDisplay();
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+// Swipe interaction
+const wrapper = document.getElementById('swipeWrapper');
+const card = document.getElementById('swipeCard');
+let touchStartX = 0;
+let touchEndX = 0;
+let isDragging = false;
+let dragDistance = 0;
+
+wrapper.addEventListener('pointerdown', (e) => {
+  touchStartX = e.clientX;
+  isDragging = true;
+  dragDistance = 0;
+  wrapper.classList.add('grabbing');
+});
+
+wrapper.addEventListener('pointermove', (e) => {
+  if (!isDragging) return;
+  touchEndX = e.clientX;
+  dragDistance = touchEndX - touchStartX;
+  
+  card.style.transform = `translateX(${dragDistance * 0.8}px)`;
+  
+  if (dragDistance < -40) {
+    wrapper.classList.add('swiping-right');
+    wrapper.classList.remove('swiping-left');
+  } else if (dragDistance > 40) {
+    wrapper.classList.add('swiping-left');
+    wrapper.classList.remove('swiping-right');
+  } else {
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+  }
+});
+
+wrapper.addEventListener('pointerup', () => {
+  isDragging = false;
+  wrapper.classList.remove('grabbing');
+  
+  const threshold = 80;
+  const item = getCurrentItem();
+  
+  if (!item) return;
+  
+  if (dragDistance > threshold) {
+    // Swipe left = PASS
+    card.classList.add('swiped-left');
+    recordResult(item, true);
+  } else if (dragDistance < -threshold) {
+    // Swipe right = FAIL
+    card.classList.add('swiped-right');
+    recordResult(item, false);
+  } else {
+    card.style.transform = 'translateX(0)';
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+  }
+});
+
+wrapper.addEventListener('pointerleave', () => {
+  if (isDragging) {
+    isDragging = false;
+    wrapper.classList.remove('grabbing');
+    card.style.transform = 'translateX(0)';
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+  }
+});
+
+function recordResult(item, passed) {
+  state.items[item.key] = { passed, comment: '' };
+  saveState();
+
+  if (!passed && item.critical && item.subItems && item.subItems.length) {
+    showSubCheckModal(item);
+  } else if (!passed && item.critical) {
+    state.failedCritical.push({ key: item.key, text: item.text, section: item.section, subIssues: [] });
+    saveState();
+    showDealBreakerModal();
+  } else {
+    showResultModal(passed, item);
+  }
+}
+
+function showSubCheckModal(item) {
+  const modal = document.getElementById('subCheckModal');
+  const list = document.getElementById('subCheckList');
+
+  list.innerHTML = item.subItems.map((sub, idx) => `
+    <label class="sub-check-item">
+      <input type="checkbox" data-sub="${idx}">
+      <span>${sub}</span>
+    </label>
+  `).join('');
+
+  document.getElementById('subCheckConfirmBtn').onclick = () => {
+    const checked = Array.from(list.querySelectorAll('input:checked'))
+      .map(cb => item.subItems[cb.dataset.sub]);
+
+    state.failedCritical.push({
+      key: item.key,
+      text: item.text,
+      section: item.section,
+      subIssues: checked.length ? checked : [item.text]
+    });
+    saveState();
+
+    modal.classList.remove('show');
+    showDealBreakerModal();
+  };
+
+  modal.classList.add('show');
+}
+
+function showResultModal(passed, item) {
+  const modal = document.getElementById('resultModal');
+  const resultCard = document.getElementById('resultCard');
+  const commentSection = document.getElementById('commentSection');
+  const commentTextarea = document.getElementById('commentTextarea');
+  
+  if (passed) {
+    resultCard.classList.add('pass');
+    resultCard.classList.remove('fail');
+    document.getElementById('resultIcon').textContent = '✓';
+    document.getElementById('resultTitle').textContent = 'ผ่าน!';
+    document.getElementById('resultDesc').textContent = 'ข้อนี้ตรวจผ่าน';
+    commentSection.style.display = 'block';
+  } else {
+    resultCard.classList.add('fail');
+    resultCard.classList.remove('pass');
+    document.getElementById('resultIcon').textContent = '✗';
+    document.getElementById('resultTitle').textContent = 'ไม่ผ่าน!';
+    document.getElementById('resultDesc').textContent = 'พบปัญหา';
+    commentSection.style.display = 'block';
+  }
+  
+  commentTextarea.value = state.items[item.key].comment || '';
+  commentTextarea.oninput = (e) => {
+    state.items[item.key].comment = e.target.value;
+    document.getElementById('commentLen').textContent = e.target.value.length;
+    saveState();
+  };
+  document.getElementById('commentLen').textContent = (state.items[item.key].comment || '').length;
+  
+  modal.classList.add('show');
+}
+
+function showDealBreakerModal() {
+  const modal = document.getElementById('dealBreakerModal');
+  const list = document.getElementById('criticalList');
+  
+  const failedItems = state.failedCritical
+    .map(f => {
+      const subText = (f.subIssues && f.subIssues.length)
+        ? f.subIssues.map(s => `<div class="critical-text">❌ ${s}</div>`).join('')
+        : `<div class="critical-text">❌ ${f.text}</div>`;
+      return `
+        <div class="critical-item">
+          ${subText}
+          <div class="critical-section">${f.section} — ${f.text}</div>
+        </div>
+      `;
+    }).join('');
+  
+  list.innerHTML = failedItems;
+  modal.classList.add('show');
+}
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  document.getElementById('resultModal').classList.remove('show');
+  const item = getCurrentItem();
+  
+  if (item) {
+    card.classList.remove('swiped-left', 'swiped-right');
+    card.style.transform = 'translateX(0)';
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+  }
+  
+  nextItem();
+  updateDisplay();
+});
+
+document.getElementById('continueBtn').addEventListener('click', () => {
+  document.getElementById('dealBreakerModal').classList.remove('show');
+  const item = getCurrentItem();
+  
+  if (item) {
+    card.classList.remove('swiped-left', 'swiped-right');
+    card.style.transform = 'translateX(0)';
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+  }
+  
+  nextItem();
+  updateDisplay();
+});
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  if (confirm('ล้างข้อมูลทั้งหมดและเริ่มตรวจตัวใหม่?')) {
+    state = { inspectorName: state.inspectorName, items: {}, currentItem: 0, totalItems: state.totalItems, failedCritical: [] };
+    currentSectionIdx = 0;
+    currentItemInSectionIdx = 0;
+    document.getElementById('dealBreakerModal').classList.remove('show');
+    card.classList.remove('swiped-left', 'swiped-right');
+    card.style.transform = 'translateX(0)';
+    wrapper.classList.remove('swiping-left', 'swiping-right');
+    saveState();
+    updateDisplay();
+  }
+});
+
+document.getElementById('inspectorName').addEventListener('input', (e) => {
+  state.inspectorName = e.target.value;
+  saveState();
+});
+
+document.getElementById('resetAllBtn').addEventListener('click', () => {
+  if (confirm('ล้างข้อมูลทั้งหมด?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+});
+
+initData();
 </script>
 </body>
 </html>
